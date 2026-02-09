@@ -10,6 +10,7 @@ $base_url = Flight::get('base_url');
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
+
 <head>
     <meta charset="UTF-8">
     <title>Connexion - Metis</title>
@@ -33,69 +34,76 @@ $base_url = Flight::get('base_url');
     <link rel="stylesheet" href="<?= $base_url ?>css/style.css">
 
     <style>
-    .card-header.bg-primary {
-        background-color: white !important;
-        color: black !important;
-        border-bottom: 1px solid #dee2e6;
-        text-align: left !important;
-        padding: 1.5rem 1.5rem !important;
-    }
-    
-    .card-header.bg-primary h4 {
-        text-align: left;
-        margin-bottom: 0;
-    }
-    
-    .card-header.bg-primary h4 i {
-        color: #198754 !important;
-    }
-</style>
+        .card-header.bg-primary {
+            background-color: white !important;
+            color: black !important;
+            border-bottom: 1px solid #dee2e6;
+            text-align: left !important;
+            padding: 1.5rem 1.5rem !important;
+        }
+
+        .card-header.bg-primary h4 {
+            text-align: left;
+            margin-bottom: 0;
+        }
+
+        .card-header.bg-primary h4 i {
+            color: #198754 !important;
+        }
+    </style>
 </head>
 
 <body class="bg-light">
-
-<div class="container min-vh-100 d-flex align-items-center">
-    <div class="row justify-content-center w-100">
-
-        <div class="col-lg-6 col-md-8">
-            <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header bg-primary text-white text-center py-4">
-                    <h4 class="mb-0">
-                        <i class="bi bi-person-plus me-2 text-success"></i>
-                        Login user without password
-                    </h4>
-                </div>
-
-                <div class="card-body p-4">
-                    <form method="post" action="/register" class="needs-validation" novalidate>
-
-                        <div class="mb-3">
-                            <label class="form-label">Username</label>
-                            <div class="input-group">
-                                <span class="input-group-text">
-                                    <i class="bi bi-person"></i>
-                                </span>
-                                <input type="text" name="username" class="form-control" placeholder="Enter username" required>
+    <div class="container min-vh-100 d-flex align-items-center">
+        <div class="row justify-content-center w-100">
+            <div class="col-lg-6 col-md-8">
+                <div class="card shadow-lg border-0 rounded-4">
+                    <div class="card-body p-4">
+                        <form method="post" action="/login" class="needs-validation" novalidate>
+                            <div class="mb-3">
+                                <label class="form-label">Nom</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-person"></i>
+                                    </span>
+                                    <input type="text" name="nom" class="form-control" placeholder="Entrez votre nom"
+                                        required>
+                                </div>
                             </div>
-                        </div>
 
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary btn-lg">
-                                <i class="bi bi-check-circle me-2"></i>
-                                Log in
-                            </button>
-                        </div>
+                            <div class="mb-3">
+                                <label class="form-label">Mot de passe</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="bi bi-lock"></i>
+                                    </span>
+                                    <input type="password" name="motDePasse" class="form-control"
+                                        placeholder="Entrez votre mot de passe" required>
+                                </div>
+                            </div>
 
-                    </form>
+                            <?php if (isset($error)): ?>
+                                <div class="alert alert-danger">
+                                    <?php echo $error; ?>
+                                </div>
+                            <?php endif; ?>
+
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-check-circle me-2"></i>
+                                    Se connecter
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
+
         </div>
-
     </div>
-</div>
 
-<script type="module" src="<?= $base_url ?>assets/vendor-bootstrap-C9iorZI5.js"></script>
-<script type="module" src="<?= $base_url ?>assets/vendor-ui-CflGdlft.js"></script>
+    <script type="module" src="<?= $base_url ?>assets/vendor-bootstrap-C9iorZI5.js"></script>
+    <script type="module" src="<?= $base_url ?>assets/vendor-ui-CflGdlft.js"></script>
 
 </body>
 
