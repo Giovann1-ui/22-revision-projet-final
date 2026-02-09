@@ -13,4 +13,4 @@ Ceci est une revision avant le projet final S3
 - Datebase Client
 
 # BASE UTILISEE
-- MySQL
+- MySQL/Postgres
