@@ -1,0 +1,23 @@
+{
+    "name": "flightphp/tracy-extensions",
+    "description": "A few Flight specific extensions for Tracy Debugger to help debug your code quickly.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "n0nag0n",
+            "email": "n0nag0n@sky-9.com"
+        }
+	],
+	"autoload": {
+		"classmap": [ "src/" ]
+	},
+    "require": {
+		"php": ">=8.0",
+        "tracy/tracy": "^2.10",
+        "flightphp/core": "^3.0"
+    },
+    "require-dev": {
+        "ghostff/session": "^2.1"
+    }
+}

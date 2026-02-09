@@ -1,0 +1,221 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "6306ce72a2d76eb58f404af6e6bc52cf",
+    "packages": [
+        {
+            "name": "flightphp/core",
+            "version": "v3.5.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/flightphp/core.git",
+                "reference": "4f37a4854e4fac9b9cc4ea6c11dcbdb55784dbe4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/flightphp/core/zipball/4f37a4854e4fac9b9cc4ea6c11dcbdb55784dbe4",
+                "reference": "4f37a4854e4fac9b9cc4ea6c11dcbdb55784dbe4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": "^7.4|^8.0|^8.1|^8.2|^8.3"
+            },
+            "replace": {
+                "mikecao/flight": "2.0.2"
+            },
+            "require-dev": {
+                "ext-pdo_sqlite": "*",
+                "phpstan/extension-installer": "^1.3",
+                "phpstan/phpstan": "^1.10",
+                "phpunit/phpunit": "^9.5",
+                "rregeer/phpunit-coverage-check": "^0.3.1",
+                "squizlabs/php_codesniffer": "^3.8"
+            },
+            "suggest": {
+                "latte/latte": "Latte template engine",
+                "phpstan/phpstan": "PHP Static Analyzer",
+                "tracy/tracy": "Tracy debugger"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "flight/autoload.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Mike Cao",
+                    "email": "mike@mikecao.com",
+                    "homepage": "http://www.mikecao.com/",
+                    "role": "Original Developer"
+                },
+                {
+                    "name": "Franyer Sánchez",
+                    "email": "franyeradriansanchez@gmail.com",
+                    "homepage": "https://faslatam.000webhostapp.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "n0nag0n",
+                    "email": "n0nag0n@sky-9.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Flight is a fast, simple, extensible framework for PHP. Flight enables you to quickly and easily build RESTful web applications. This is the maintained fork of mikecao/flight",
+            "homepage": "http://flightphp.com",
+            "support": {
+                "issues": "https://github.com/flightphp/core/issues",
+                "source": "https://github.com/flightphp/core/tree/v3.5.3"
+            },
+            "time": "2024-02-21T08:44:35+00:00"
+        },
+        {
+            "name": "tracy/tracy",
+            "version": "v2.10.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/tracy.git",
+                "reference": "86bdba4aa0f707d3f125933931d3df6e5c7aad79"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/tracy/zipball/86bdba4aa0f707d3f125933931d3df6e5c7aad79",
+                "reference": "86bdba4aa0f707d3f125933931d3df6e5c7aad79",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-session": "*",
+                "php": ">=8.0 <8.4"
+            },
+            "conflict": {
+                "nette/di": "<3.0"
+            },
+            "require-dev": {
+                "latte/latte": "^2.5",
+                "nette/di": "^3.0",
+                "nette/http": "^3.0",
+                "nette/mail": "^3.0",
+                "nette/tester": "^2.2",
+                "nette/utils": "^3.0",
+                "phpstan/phpstan": "^1.0",
+                "psr/log": "^1.0 || ^2.0 || ^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.10-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Tracy/functions.php"
+                ],
+                "classmap": [
+                    "src"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "😎  Tracy: the addictive tool to ease debugging PHP code for cool developers. Friendly design, logging, profiler, advanced features like debugging AJAX calls or CLI support. You will love it.",
+            "homepage": "https://tracy.nette.org",
+            "keywords": [
+                "Xdebug",
+                "debug",
+                "debugger",
+                "nette",
+                "profiler"
+            ],
+            "support": {
+                "issues": "https://github.com/nette/tracy/issues",
+                "source": "https://github.com/nette/tracy/tree/v2.10.5"
+            },
+            "time": "2023-10-16T21:54:18+00:00"
+        }
+    ],
+    "packages-dev": [
+        {
+            "name": "ghostff/session",
+            "version": "v2.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Ghostff/Session.git",
+                "reference": "d8f1e50a7382308d8f9a7d5b3004fb3158c94f1d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Ghostff/Session/zipball/d8f1e50a7382308d8f9a7d5b3004fb3158c94f1d",
+                "reference": "d8f1e50a7382308d8f9a7d5b3004fb3158c94f1d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^8"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ghostff\\Session\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "0BSD"
+            ],
+            "authors": [
+                {
+                    "name": "ghostff",
+                    "email": "frankchris@hotmail.com"
+                }
+            ],
+            "description": "PHP Session Manager (non-blocking, flash, segment, session encryption).",
+            "keywords": [
+                "memcached",
+                "non-blocking",
+                "redis",
+                "secured-session",
+                "segment",
+                "session",
+                "session-manger",
+                "sql"
+            ],
+            "support": {
+                "issues": "https://github.com/Ghostff/Session/issues",
+                "source": "https://github.com/Ghostff/Session/tree/v2.1.0"
+            },
+            "time": "2023-06-02T02:00:37+00:00"
+        }
+    ],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=8.0"
+    },
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
+}
