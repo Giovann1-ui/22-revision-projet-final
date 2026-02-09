@@ -1,3 +1,4 @@
+-- Active: 1770231351790@@127.0.0.1@3306@takalo
 -- Création de la base de données
 CREATE DATABASE IF NOT EXISTS takalo;
 
