@@ -26,5 +26,18 @@ class UserModel
         
         return false;
     }
+
+    public function getType($nom) {
+        $stmt = $this->db->prepare("SELECT carac FROM membres WHERE nom = :username");
+        $stmt->bindValue(':username', $nom, PDO::PARAM_STR);
+        $stmt->execute();
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            return $user['carac'];
+        }
+        
+        return null;
+    }
 }
 ?>
