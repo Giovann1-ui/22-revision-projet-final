@@ -11,6 +11,8 @@
         - [ ] propositions (id, id_objet1, id_objet2, id_proprietaire1, id_proprietaire2, id_statut_proposition)
     - [ ] creer les vues
     - [ ] insérer des données de test
+  
+##### Andriantsoa
 - [ ] page de connexion et d'inscription (admin)
     - [ ] login (identique à celui de l'utilisateur)
     - [ ] gestion des categories d'objets (je suis pas sur de comprendre le but ici)
@@ -19,7 +21,7 @@
 - [ ] page de connexion et d'inscription (utilisateur)
     - [ ] login
     - [ ] inscription
-
+#
 - [ ] page d'accueil
     - [ ] afficher les objets avec son propriétaire
     - [ ] afficher les membres
