@@ -20,7 +20,7 @@
     - [ ] login
     - [ ] inscription
 
-# Manantsoa 
+## Manantsoa 
 - [ ] page d'accueil
     - [ ] afficher les objets avec son propriétaire
     - [ ] afficher les membres
@@ -31,7 +31,8 @@
     - [ ] ajouter un objet
     - [ ] supprimer un objet
 
-#
+##
+
 - [ ] page pour gerer les objets du membre
     - [ ] mofifier titre
     - [ ] modifier description
