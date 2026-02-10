@@ -2,6 +2,7 @@
 namespace app\controllers;
 
 use app\models\ObjetModel;
+use app\models\CategorieModel;
 use Flight;
 
 class ObjetController {
@@ -34,34 +35,84 @@ class ObjetController {
     }
 
     /**
+     * Affiche le formulaire pour ajouter un objet
+     */
+    public function showAddObjetForm(){
+        // Vérifier si l'utilisateur est connecté
+        if (!isset($_SESSION['user_id'])) {
+            Flight::redirect('/login');
+            return;
+        }
+
+        try {
+            $categorieModel = new CategorieModel(Flight::db());
+            $categories = $categorieModel->get_All_Categories();
+        } catch (\Exception $e) {
+            // En cas d'erreur, utiliser un tableau vide
+            $categories = [];
+        }
+        
+        Flight::render('ajouterObjet', ['categories' => $categories]);
+    }
+
+    /**
      * Crée un nouvel objet
      */
     public function createObjet(){
+        // Vérifier si l'utilisateur est connecté
+        if (!isset($_SESSION['user_id'])) {
+            Flight::redirect('/login');
+            return;
+        }
+
         $objetModel = new ObjetModel(Flight::db());
         
         $nom = Flight::request()->data->nom ?? '';
         $description = Flight::request()->data->description ?? '';
         $prix_estimatif = Flight::request()->data->prix_estimatif ?? 0;
-        $id_categorie = Flight::request()->data->id_categorie ?? 1;
-        $id_membre = Flight::request()->data->id_membre ?? 0;
+        $id_categorie = Flight::request()->data->id_categorie ?? 0;
+        
+        // Validation
+        if (empty($nom) || empty($description) || $prix_estimatif <= 0 || $id_categorie <= 0) {
+            $categorieModel = new CategorieModel(Flight::db());
+            $categories = $categorieModel->get_All_Categories();
+            Flight::render('ajouterObjet', [
+                'categories' => $categories,
+                'error' => 'Tous les champs sont requis'
+            ]);
+            return;
+        }
         
         $data = [
             'nom' => $nom,
             'description' => $description,
             'prix_estimatif' => $prix_estimatif,
             'id_categorie' => $id_categorie,
-            'id_membre' => $id_membre
+            'id_membre' => $_SESSION['user_id']
         ];
         
         $objetModel->createObject($data);
-        Flight::redirect('/mes-objets/' . $id_membre);
+        Flight::redirect('/profile');
     }
 
     /**
      * Met à jour un objet existant
      */
     public function updateObjet($id){
+        // Vérifier si l'utilisateur est connecté
+        if (!isset($_SESSION['user_id'])) {
+            Flight::json(['success' => false, 'message' => 'Non connecté'], 401);
+            return;
+        }
+
         $objetModel = new ObjetModel(Flight::db());
+        
+        // Vérifier que l'objet appartient à l'utilisateur
+        $objet = $objetModel->get_Object_by_id($id);
+        if (!$objet || $objet['id_membre'] != $_SESSION['user_id']) {
+            Flight::json(['success' => false, 'message' => 'Objet non trouvé ou accès refusé'], 403);
+            return;
+        }
         
         $nom = Flight::request()->data->nom ?? '';
         $description = Flight::request()->data->description ?? '';
@@ -83,7 +134,21 @@ class ObjetController {
      * Supprime un objet
      */
     public function deleteObjet($id){
+        // Vérifier si l'utilisateur est connecté
+        if (!isset($_SESSION['user_id'])) {
+            Flight::json(['success' => false, 'message' => 'Non connecté'], 401);
+            return;
+        }
+
         $objetModel = new ObjetModel(Flight::db());
+        
+        // Vérifier que l'objet appartient à l'utilisateur
+        $objet = $objetModel->get_Object_by_id($id);
+        if (!$objet || $objet['id_membre'] != $_SESSION['user_id']) {
+            Flight::json(['success' => false, 'message' => 'Objet non trouvé ou accès refusé'], 403);
+            return;
+        }
+        
         $objetModel->deleteObject($id);
         Flight::json(['success' => true, 'message' => 'Objet supprimé']);
     }
