@@ -67,5 +67,18 @@ class UserModel
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * Met à jour un utilisateur
+     */
+    public function updateUser($id, $data)
+    {
+        $stmt = $this->db->prepare("UPDATE Membres SET nom = :nom WHERE id = :id");
+        $stmt->bindValue(':nom', $data['nom'], PDO::PARAM_STR);
+        $stmt->bindValue(':id', (int) $id, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->rowCount();
+    }
+
 }
 ?>

@@ -3,6 +3,7 @@
 use app\controllers\ApiExampleController;
 use app\controllers\HomeController;
 use app\controllers\UserController;
+use app\controllers\ProfilController;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
@@ -22,6 +23,10 @@ $router->group('', function(Router $router) use ($app) {
 	$router->get('/login', [ UserController::class, 'allUsers' ]);
 	$router->post('/register', [ UserController::class, 'createUser' ]);
 	$router->get('/logout', [ HomeController::class, 'logout' ]);
+
+	// Profil
+	$router->get('/profile', [ ProfilController::class, 'monProfil' ]);
+	$router->post('/profile/update', [ ProfilController::class, 'updateProfil' ]);
 
 	$router->get('/hello-world/@name', function($name) {
 		echo '<h1>Hello world! Oh hey '.$name.'!</h1>';

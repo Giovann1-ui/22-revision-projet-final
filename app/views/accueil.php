@@ -15,6 +15,27 @@ $base_url = Flight::get('base_url');
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="<?= $base_url ?>bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="<?= $base_url ?>assets/main-QD_VOj1Y.css">
+    
+    <style>
+        /* Éviter que le navbar cache le contenu */
+        body {
+            padding-top: 80px !important;
+        }
+        
+        .admin-header {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            z-index: 1030 !important;
+        }
+        
+        .admin-header .navbar {
+            margin-bottom: 0 !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
@@ -30,10 +51,10 @@ $base_url = Flight::get('base_url');
                 <div class="navbar-nav ms-auto">
                     <?php if (isset($_SESSION['user'])): ?>
                         <div class="d-flex align-items-center gap-3">
-                            <span class="text-muted">
+                            <a href="/profile"><span class="text-muted">
                                 <i class="bi bi-person-circle me-1"></i>
                                 <?= htmlspecialchars($_SESSION['user_nom']) ?>
-                            </span>
+                            </span></a>
                             <a href="/mes-objets" class="btn btn-sm btn-outline-primary">
                                 <i class="bi bi-box me-1"></i>Mes objets
                             </a>
