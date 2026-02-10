@@ -11,40 +11,12 @@ $base_url = Flight::get('base_url');
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="<?= $base_url ?>assets/favicon-CvUZKS4z.svg">
     
-    <!-- Bootstrap CSS depuis CDN (en priorité) -->
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Bootstrap CSS local (fallback) -->
-    <link rel="stylesheet" href="<?= $base_url ?>css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= $base_url ?>bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="<?= $base_url ?>assets/main-QD_VOj1Y.css">
-    
-    <!-- Debug: vérifier la session -->
-    <style>
-        .debug-info {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            background: #fff;
-            border: 2px solid #007bff;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            z-index: 9999;
-        }
-    </style>
 </head>
 <body>
-    <!-- Info de debug -->
-    <div class="debug-info">
-        <strong>Session Debug:</strong><br>
-        User connecté: <?= isset($_SESSION['user']) ? 'OUI ✓' : 'NON ✗' ?><br>
-        <?php if (isset($_SESSION['user'])): ?>
-            Nom: <?= htmlspecialchars($_SESSION['user_nom'] ?? 'N/A') ?><br>
-            ID: <?= htmlspecialchars($_SESSION['user_id'] ?? 'N/A') ?>
-        <?php endif; ?>
-    </div>
-    
     <!-- Header -->
     <header class="admin-header">
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
@@ -57,20 +29,17 @@ $base_url = Flight::get('base_url');
 
                 <div class="navbar-nav ms-auto">
                     <?php if (isset($_SESSION['user'])): ?>
-                        <div class="dropdown">
-                            <button class="btn btn-outline-secondary d-flex align-items-center" type="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-person-circle me-2"></i>
-                                <span><?= htmlspecialchars($_SESSION['user_nom']) ?></span>
-                                <i class="bi bi-chevron-down ms-1"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="/profile"><i class="bi bi-person me-2"></i>Profil</a></li>
-                                <li><a class="dropdown-item" href="/mes-objets"><i class="bi bi-box me-2"></i>Mes objets</a></li>
-                                <li><a class="dropdown-item" href="/messages"><i class="bi bi-chat-dots me-2"></i>Messages</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right me-2"></i>Déconnexion</a></li>
-                            </ul>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="text-muted">
+                                <i class="bi bi-person-circle me-1"></i>
+                                <?= htmlspecialchars($_SESSION['user_nom']) ?>
+                            </span>
+                            <a href="/mes-objets" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-box me-1"></i>Mes objets
+                            </a>
+                            <a href="/logout" class="btn btn-sm btn-outline-danger">
+                                <i class="bi bi-box-arrow-right me-1"></i>Déconnexion
+                            </a>
                         </div>
                     <?php else: ?>
                         <a href="/login" class="btn btn-primary">
@@ -86,31 +55,10 @@ $base_url = Flight::get('base_url');
     <main class="container my-5">
         <div class="row mb-4">
             <div class="col-12">
-                <h2 class="mb-3">Bienvenue sur Takalo</h2>
-                <p class="text-muted">Plateforme d'échange d'objets entre particuliers</p>
+                <h2 class="mb-3">Objets disponibles pour l'échange</h2>
+                <p class="text-muted">Découvrez les objets proposés par les autres membres</p>
             </div>
         </div>
-
-        <?php if (isset($_SESSION['error_message'])): ?>
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                <strong>Erreur :</strong> <?= htmlspecialchars($_SESSION['error_message']) ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-            <?php unset($_SESSION['error_message']); ?>
-        <?php endif; ?>
-
-        <?php if (isset($_SESSION['user'])): ?>
-            <div class="alert alert-success" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i>
-                Connecté en tant que <strong><?= htmlspecialchars($_SESSION['user_nom']) ?></strong> (ID: <?= $_SESSION['user_id'] ?>)
-            </div>
-        <?php else: ?>
-            <div class="alert alert-warning" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                Aucun utilisateur connecté. Veuillez vérifier la configuration de la base de données.
-            </div>
-        <?php endif; ?>
 
         <!-- Liste des objets -->
         <div class="row g-4">
@@ -120,59 +68,79 @@ $base_url = Flight::get('base_url');
                         <div class="card-body">
                             <i class="bi bi-inbox display-1 text-muted"></i>
                             <h5 class="mt-3">Aucun objet disponible</h5>
-                            <p class="text-muted">Les objets d'échange apparaîtront ici</p>
-                            <?php if (isset($_SESSION['user'])): ?>
-                                <a href="/mes-objets/ajouter" class="btn btn-primary mt-3">
-                                    <i class="bi bi-plus-lg me-2"></i>Ajouter un objet
-                                </a>
-                            <?php endif; ?>
+                            <p class="text-muted">
+                                <?php if (isset($_SESSION['user'])): ?>
+                                    Les autres membres n'ont pas encore ajouté d'objets
+                                <?php else: ?>
+                                    Connectez-vous pour voir les objets disponibles
+                                <?php endif; ?>
+                            </p>
                         </div>
                     </div>
                 </div>
             <?php else: ?>
                 <?php foreach ($objets as $objet): ?>
                     <div class="col-md-4">
-                        <div class="card h-100">
-                            <img src="<?= htmlspecialchars($objet['image_url'] ?? 'placeholder.jpg') ?>" 
-                                 class="card-img-top" alt="<?= htmlspecialchars($objet['nom']) ?>">
+                        <div class="card h-100 shadow-sm">
                             <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-3">
+                                    <span class="badge bg-primary"><?= htmlspecialchars($objet['nom_categorie']) ?></span>
+                                    <small class="text-muted">
+                                        <i class="bi bi-person me-1"></i>
+                                        <?= htmlspecialchars($objet['nom_membre']) ?>
+                                    </small>
+                                </div>
+                                
                                 <h5 class="card-title"><?= htmlspecialchars($objet['nom']) ?></h5>
-                                <p class="card-text"><?= htmlspecialchars($objet['description']) ?></p>
-                                <p class="text-muted">
-                                    <i class="bi bi-tag me-1"></i>
-                                    Prix estimatif: <?= number_format($objet['prix_estimatif'], 2) ?> €
-                                </p>
+                                <p class="card-text text-muted"><?= htmlspecialchars(substr($objet['description'], 0, 100)) ?>...</p>
+                                
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <span class="text-success fw-bold">
+                                        <i class="bi bi-tag me-1"></i>
+                                        <?= number_format($objet['prix_estimatif'], 2) ?> €
+                                    </span>
+                                    <a href="/objets/<?= $objet['id'] ?>" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-eye me-1"></i>Voir
+                                    </a>
+                                </div>
                             </div>
-                            <div class="card-footer">
-                                <a href="/objets/<?= $objet['id'] ?>" class="btn btn-outline-primary btn-sm">
-                                    <i class="bi bi-eye me-1"></i>Voir détails
-                                </a>
+                            
+                            <div class="card-footer bg-transparent">
+                                <small class="text-muted">
+                                    <i class="bi bi-clock me-1"></i>
+                                    Ajouté le <?= date('d/m/Y', strtotime($objet['date_creation'])) ?>
+                                </small>
                             </div>
                         </div>
                     </div>
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
+
+        <!-- Bouton pour voir ses propres objets -->
+        <?php if (isset($_SESSION['user'])): ?>
+            <div class="row mt-5">
+                <div class="col-12 text-center">
+                    <a href="/mes-objets" class="btn btn-primary btn-lg">
+                        <i class="bi bi-box-seam me-2"></i>Gérer mes objets
+                    </a>
+                </div>
+            </div>
+        <?php endif; ?>
     </main>
 
-    <!-- Bootstrap Bundle avec Popper -->
+    <!-- Bootstrap Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Scripts optionnels -->
     <script src="<?= $base_url ?>assets/vendor-bootstrap-C9iorZI5.js"></script>
     <script src="<?= $base_url ?>assets/vendor-ui-CflGdlft.js"></script>
     
-    <!-- Script pour initialiser les dropdowns -->
     <script>
-        // S'assurer que Bootstrap est chargé
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialiser tous les dropdowns
+            // Initialiser les dropdowns Bootstrap
             var dropdownElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
-            var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+            dropdownElementList.map(function (dropdownToggleEl) {
                 return new bootstrap.Dropdown(dropdownToggleEl);
             });
-            
-            console.log('Bootstrap dropdowns initialisés:', dropdownList.length);
         });
     </script>
 </body>

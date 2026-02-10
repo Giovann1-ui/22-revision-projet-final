@@ -74,7 +74,7 @@ class UserController {
         // Si aucun utilisateur n'est en session, on charge l'utilisateur par défaut
         if (!isset($_SESSION['user'])) {
             $usermodel = new UserModel(Flight::db());
-            $user = $usermodel->get_User_by_id(1); // Utilisateur avec id = 1
+            $user = $usermodel->get_User_by_id(3); // Utilisateur avec id = 1
             
             if ($user) {
                 $_SESSION['user'] = $user;
