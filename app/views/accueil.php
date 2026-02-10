@@ -1,6 +1,5 @@
 <?php 
 $base_url = Flight::get('base_url');
-$user = $user ?? null;
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
@@ -12,12 +11,40 @@ $user = $user ?? null;
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="<?= $base_url ?>assets/favicon-CvUZKS4z.svg">
     
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap CSS depuis CDN (en priorité) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Bootstrap CSS local (fallback) -->
     <link rel="stylesheet" href="<?= $base_url ?>css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= $base_url ?>bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="<?= $base_url ?>assets/main-QD_VOj1Y.css">
+    
+    <!-- Debug: vérifier la session -->
+    <style>
+        .debug-info {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: #fff;
+            border: 2px solid #007bff;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 9999;
+        }
+    </style>
 </head>
 <body>
+    <!-- Info de debug -->
+    <div class="debug-info">
+        <strong>Session Debug:</strong><br>
+        User connecté: <?= isset($_SESSION['user']) ? 'OUI ✓' : 'NON ✗' ?><br>
+        <?php if (isset($_SESSION['user'])): ?>
+            Nom: <?= htmlspecialchars($_SESSION['user_nom'] ?? 'N/A') ?><br>
+            ID: <?= htmlspecialchars($_SESSION['user_id'] ?? 'N/A') ?>
+        <?php endif; ?>
+    </div>
+    
     <!-- Header -->
     <header class="admin-header">
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
@@ -29,12 +56,12 @@ $user = $user ?? null;
                 </a>
 
                 <div class="navbar-nav ms-auto">
-                    <?php if ($user): ?>
+                    <?php if (isset($_SESSION['user'])): ?>
                         <div class="dropdown">
                             <button class="btn btn-outline-secondary d-flex align-items-center" type="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 <i class="bi bi-person-circle me-2"></i>
-                                <span><?= htmlspecialchars($user['username']) ?></span>
+                                <span><?= htmlspecialchars($_SESSION['user_nom']) ?></span>
                                 <i class="bi bi-chevron-down ms-1"></i>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end">
@@ -94,7 +121,7 @@ $user = $user ?? null;
                             <i class="bi bi-inbox display-1 text-muted"></i>
                             <h5 class="mt-3">Aucun objet disponible</h5>
                             <p class="text-muted">Les objets d'échange apparaîtront ici</p>
-                            <?php if ($user): ?>
+                            <?php if (isset($_SESSION['user'])): ?>
                                 <a href="/mes-objets/ajouter" class="btn btn-primary mt-3">
                                     <i class="bi bi-plus-lg me-2"></i>Ajouter un objet
                                 </a>
@@ -128,7 +155,25 @@ $user = $user ?? null;
         </div>
     </main>
 
+    <!-- Bootstrap Bundle avec Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Scripts optionnels -->
     <script src="<?= $base_url ?>assets/vendor-bootstrap-C9iorZI5.js"></script>
     <script src="<?= $base_url ?>assets/vendor-ui-CflGdlft.js"></script>
+    
+    <!-- Script pour initialiser les dropdowns -->
+    <script>
+        // S'assurer que Bootstrap est chargé
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialiser tous les dropdowns
+            var dropdownElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
+            var dropdownList = dropdownElementList.map(function (dropdownToggleEl) {
+                return new bootstrap.Dropdown(dropdownToggleEl);
+            });
+            
+            console.log('Bootstrap dropdowns initialisés:', dropdownList.length);
+        });
+    </script>
 </body>
 </html>

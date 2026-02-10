@@ -55,9 +55,21 @@ if (!isset($_SESSION['user'])) {
             $_SESSION['user'] = $user;
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_nom'] = $user['nom'];
+        } else {
+            $_SESSION['error_message'] = "Aucun utilisateur avec id=1 trouvé dans la base de données.";
         }
     } catch (Exception $e) {
-        // Si la connexion à la base échoue, on continue sans utilisateur
+        // Si la connexion à la base échoue, créer un utilisateur temporaire pour tester
+        $_SESSION['error_message'] = "Erreur DB: " . $e->getMessage();
+        
+        // TEMPORAIRE : Créer un faux utilisateur pour tester l'interface
+        $_SESSION['user'] = [
+            'id' => 999,
+            'nom' => 'Utilisateur Test',
+            'mot_de_passe' => ''
+        ];
+        $_SESSION['user_id'] = 999;
+        $_SESSION['user_nom'] = 'Utilisateur Test';
     }
 }
 
