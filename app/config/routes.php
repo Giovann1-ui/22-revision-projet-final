@@ -1,6 +1,8 @@
 <?php
 
 use app\controllers\ApiExampleController;
+use app\controllers\HomeController;
+use app\controllers\UserController;
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
@@ -13,9 +15,13 @@ use flight\net\Router;
 // This wraps all routes in the group with the SecurityHeadersMiddleware
 $router->group('', function(Router $router) use ($app) {
 
-	$router->get('/', function() use ($app) {
-		$app->render('welcome', [ 'message' => 'Takalo-takalo' ]);
-	});
+	// Page d'accueil
+	$router->get('/', [ HomeController::class, 'index' ]);
+
+	// Authentification
+	$router->get('/login', [ UserController::class, 'allUsers' ]);
+	$router->post('/register', [ UserController::class, 'createUser' ]);
+	$router->get('/logout', [ HomeController::class, 'logout' ]);
 
 	$router->get('/hello-world/@name', function($name) {
 		echo '<h1>Hello world! Oh hey '.$name.'!</h1>';
