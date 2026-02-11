@@ -32,7 +32,9 @@ $router->group('', function(Router $router) use ($app) {
 	// Gestion des objets
 	$router->get('/mes-objets/ajouter', [ ObjetController::class, 'showAddObjetForm' ]);
 	$router->post('/mes-objets/ajouter', [ ObjetController::class, 'createObjet' ]);
-	$router->delete('/mes-objets/supprimer/@id:[0-9]+', [ ObjetController::class, 'deleteObjet' ]);
+	$router->delete('/mes-objets/supprimer/@id', [ ObjetController::class, 'deleteObjet' ]);
+	// Route POST alternative pour la suppression (fallback si DELETE ne marche pas)
+	$router->post('/mes-objets/supprimer/@id', [ ObjetController::class, 'deleteObjet' ]);
 
 	// Example route
 	$router->get('/hello-world/@name', function($name) {

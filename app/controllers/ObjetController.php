@@ -48,7 +48,6 @@ class ObjetController {
             $categorieModel = new CategorieModel(Flight::db());
             $categories = $categorieModel->get_All_Categories();
         } catch (\Exception $e) {
-            // En cas d'erreur, utiliser un tableau vide
             $categories = [];
         }
         
@@ -78,7 +77,7 @@ class ObjetController {
             $categories = $categorieModel->get_All_Categories();
             Flight::render('ajouterObjet', [
                 'categories' => $categories,
-                'error' => 'Tous les champs sont requis'
+                'error' => 'Tous les champs sont requis et doivent être valides'
             ]);
             return;
         }
@@ -134,8 +133,13 @@ class ObjetController {
      * Supprime un objet
      */
     public function deleteObjet($id){
+        // Logger pour debug
+        error_log("DELETE request received for object ID: " . $id);
+        error_log("Session user_id: " . ($_SESSION['user_id'] ?? 'not set'));
+        
         // Vérifier si l'utilisateur est connecté
         if (!isset($_SESSION['user_id'])) {
+            error_log("User not logged in");
             Flight::json(['success' => false, 'message' => 'Non connecté'], 401);
             return;
         }
@@ -144,13 +148,31 @@ class ObjetController {
         
         // Vérifier que l'objet appartient à l'utilisateur
         $objet = $objetModel->get_Object_by_id($id);
-        if (!$objet || $objet['id_membre'] != $_SESSION['user_id']) {
-            Flight::json(['success' => false, 'message' => 'Objet non trouvé ou accès refusé'], 403);
+        
+        if (!$objet) {
+            error_log("Object not found: ID " . $id);
+            Flight::json(['success' => false, 'message' => 'Objet non trouvé'], 404);
             return;
         }
         
-        $objetModel->deleteObject($id);
-        Flight::json(['success' => true, 'message' => 'Objet supprimé']);
+        error_log("Object found, owner: " . $objet['id_membre'] . ", current user: " . $_SESSION['user_id']);
+        
+        if ($objet['id_membre'] != $_SESSION['user_id']) {
+            error_log("Access denied: object owner mismatch");
+            Flight::json(['success' => false, 'message' => 'Accès refusé'], 403);
+            return;
+        }
+        
+        // Supprimer l'objet
+        $deleted = $objetModel->deleteObject($id);
+        
+        error_log("Delete operation result: " . ($deleted ? 'success' : 'failed'));
+        
+        if ($deleted) {
+            Flight::json(['success' => true, 'message' => 'Objet supprimé avec succès']);
+        } else {
+            Flight::json(['success' => false, 'message' => 'Erreur lors de la suppression'], 500);
+        }
     }
 
     /**

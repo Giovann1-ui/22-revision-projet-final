@@ -13,10 +13,9 @@ $error = $error ?? '';
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="<?= $base_url ?>assets/favicon-CvUZKS4z.svg">
     
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS local -->
+    <link rel="stylesheet" href="<?= $base_url ?>css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= $base_url ?>bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="<?= $base_url ?>assets/main-QD_VOj1Y.css">
 </head>
 <body>
     <!-- Header -->

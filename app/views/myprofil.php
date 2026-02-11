@@ -14,10 +14,9 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="<?= $base_url ?>assets/favicon-CvUZKS4z.svg">
     
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS local -->
+    <link rel="stylesheet" href="<?= $base_url ?>css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= $base_url ?>bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="<?= $base_url ?>assets/main-QD_VOj1Y.css">
     
     <style>
         /* Éviter que le navbar cache le contenu */
@@ -46,7 +45,7 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
             <div class="container-fluid">
                 <a class="navbar-brand d-flex align-items-center" href="/">
-                    <img src="data:image/svg+xml,%3csvg%20width='32'%20height='32'%20viewBox='0%200%2032%2032'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3ccircle%20cx='16'%20cy='16'%20r='16'%20fill='url(%23logoGradient)'/%3e%3cpath%20d='M10%2024V8h2.5l2.5%206.5L17.5%208H20v16h-2V12.5L16.5%2020h-1L14%2012.5V24H10z'%20fill='white'%20font-weight='700'/%3e%3cdefs%3e%3clinearGradient%20id='logoGradient'%20x1='0'%20y1='0'%20x2='32'%20y2='32'%3e%3cstop%20offset='0%25'%20stop-color='%236366f1'/%3e%3cstop%20offset='100%25'%20stop-color='%238b5cf6'/%3e%3c/linearGradient%3e%3c/defs%3e%3c/svg%3e"
+                    <img src="data:image/svg+xml,%3csvg%20width='32'%20height='32'%20viewBox='32%2032%2032%2032'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3ccircle%20cx='16'%20cy='16'%20r='16'%20fill='url(%23logoGradient)'/%3e%3cpath%20d='M10%2024V8h2.5l2.5%206.5L17.5%208H20v16h-2V12.5L16.5%2020h-1L14%2012.5V24H10z'%20fill='white'%20font-weight='700'/%3e%3cdefs%3e%3clinearGradient%20id='logoGradient'%20x1='0'%20y1='0'%20x2='32'%20y2='32'%3e%3cstop%20offset='0%25'%20stop-color='%236366f1'/%3e%3cstop%20offset='100%25'%20stop-color='%238b5cf6'/%3e%3c/linearGradient%3e%3c/defs%3e%3c/svg%3e"
                         alt="Logo" height="32" class="d-inline-block align-text-top me-2">
                     <h1 class="h4 mb-0 fw-bold text-primary">Takalo</h1>
                 </a>
@@ -166,25 +165,11 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-start mb-3">
                                     <span class="badge bg-primary"><?= htmlspecialchars($objet['nom_categorie']) ?></span>
-                                    <div class="dropdown">
-                                        <button class="btn btn-sm btn-link text-muted" type="button" 
-                                                data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bi bi-three-dots-vertical"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end">
-                                            <li>
-                                                <a class="dropdown-item" href="/mes-objets/modifier/<?= $objet['id'] ?>">
-                                                    <i class="bi bi-pencil me-2"></i>Modifier
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a class="dropdown-item text-danger" href="#" 
-                                                   onclick="deleteObjet(<?= $objet['id'] ?>); return false;">
-                                                    <i class="bi bi-trash me-2"></i>Supprimer
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    <button class="btn btn-sm btn-danger btn-delete-objet" 
+                                            data-objet-id="<?= $objet['id'] ?>"
+                                            title="Supprimer cet objet">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
                                 </div>
                                 
                                 <h5 class="card-title"><?= htmlspecialchars($objet['nom']) ?></h5>
@@ -198,11 +183,16 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
                                 </div>
                             </div>
                             
-                            <div class="card-footer bg-transparent">
+                            <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
                                 <small class="text-muted">
                                     <i class="bi bi-clock me-1"></i>
                                     Ajouté le <?= date('d/m/Y', strtotime($objet['date_creation'])) ?>
                                 </small>
+                                <a href="/mes-objets/modifier/<?= $objet['id'] ?>" 
+                                   class="btn btn-sm btn-outline-primary"
+                                   title="Modifier cet objet">
+                                    <i class="bi bi-pencil me-1"></i>Modifier
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -244,77 +234,122 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
         </div>
     </div>
 
-    <!-- Bootstrap Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="<?= $base_url ?>assets/vendor-bootstrap-C9iorZI5.js"></script>
-    <script src="<?= $base_url ?>assets/vendor-ui-CflGdlft.js"></script>
+    <!-- Bootstrap Bundle JS local -->
+    <script src="<?= $base_url ?>css/bootstrap.bundle.min.js" nonce="<?= Flight::get('csp_nonce') ?>"></script>
     
-    <script>
-        // Modifier le profil
-        document.getElementById('editProfileForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData.entries());
-            
-            try {
-                const response = await fetch('/profile/update', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(data)
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    // Fermer le modal
-                    bootstrap.Modal.getInstance(document.getElementById('editProfileModal')).hide();
-                    
-                    // Afficher un message de succès et recharger la page
-                    alert('Profil mis à jour avec succès');
-                    location.reload();
-                } else {
-                    alert('Erreur: ' + result.message);
-                }
-            } catch (error) {
-                console.error('Erreur:', error);
-                alert('Une erreur est survenue');
-            }
-        });
-        
-        // Supprimer un objet
-        async function deleteObjet(id) {
-            if (!confirm('Êtes-vous sûr de vouloir supprimer cet objet ?')) {
-                return;
-            }
-            
-            try {
-                const response = await fetch(`/mes-objets/supprimer/${id}`, {
-                    method: 'DELETE'
-                });
-                
-                const result = await response.json();
-                
-                if (result.success) {
-                    alert('Objet supprimé avec succès');
-                    location.reload();
-                } else {
-                    alert('Erreur: ' + result.message);
-                }
-            } catch (error) {
-                console.error('Erreur:', error);
-                alert('Une erreur est survenue');
-            }
-        }
-        
-        // Initialiser les dropdowns Bootstrap
+    <script nonce="<?= Flight::get('csp_nonce') ?>">
+        // Attendre que le DOM soit chargé
         document.addEventListener('DOMContentLoaded', function() {
-            var dropdownElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
-            dropdownElementList.map(function (dropdownToggleEl) {
-                return new bootstrap.Dropdown(dropdownToggleEl);
+            
+            // Modifier le profil
+            const editProfileForm = document.getElementById('editProfileForm');
+            if (editProfileForm) {
+                editProfileForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(this);
+                    const data = Object.fromEntries(formData.entries());
+                    
+                    try {
+                        const response = await fetch('/profile/update', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(data)
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (result.success) {
+                            // Fermer le modal
+                            const modal = document.getElementById('editProfileModal');
+                            const modalInstance = bootstrap.Modal.getInstance(modal);
+                            if (modalInstance) {
+                                modalInstance.hide();
+                            }
+                            
+                            // Afficher un message de succès et recharger la page
+                            alert('Profil mis à jour avec succès');
+                            location.reload();
+                        } else {
+                            alert('Erreur: ' + result.message);
+                        }
+                    } catch (error) {
+                        console.error('Erreur:', error);
+                        alert('Une erreur est survenue');
+                    }
+                });
+            }
+            
+            // Fonction de suppression d'objet
+            async function deleteObjet(id) {
+                if (!confirm('Êtes-vous sûr de vouloir supprimer cet objet ? Cette action est irréversible.')) {
+                    return;
+                }
+                
+                console.log('Tentative de suppression de l\'objet ID:', id);
+                
+                try {
+                    const url = `/mes-objets/supprimer/${id}`;
+                    console.log('URL de suppression:', url);
+                    
+                    const response = await fetch(url, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        }
+                    });
+                    
+                    console.log('Status de réponse:', response.status);
+                    
+                    // Vérifier si la réponse est en JSON
+                    const contentType = response.headers.get("content-type");
+                    console.log('Content-Type:', contentType);
+                    
+                    if (!contentType || !contentType.includes("application/json")) {
+                        const text = await response.text();
+                        console.error('Réponse non-JSON:', text);
+                        alert('Erreur: La réponse du serveur n\'est pas au format JSON');
+                        return;
+                    }
+                    
+                    const result = await response.json();
+                    console.log('Résultat:', result);
+                    
+                    if (result.success) {
+                        // Afficher une notification de succès
+                        const alertDiv = document.createElement('div');
+                        alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3';
+                        alertDiv.style.zIndex = '9999';
+                        alertDiv.innerHTML = `
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            ${result.message}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        `;
+                        document.body.appendChild(alertDiv);
+                        
+                        // Recharger après 1 seconde
+                        setTimeout(() => location.reload(), 1000);
+                    } else {
+                        alert('Erreur: ' + result.message);
+                    }
+                } catch (error) {
+                    console.error('Erreur complète:', error);
+                    alert('Une erreur est survenue lors de la suppression: ' + error.message);
+                }
+            }
+            
+            // Attacher les event listeners aux boutons de suppression
+            const deleteButtons = document.querySelectorAll('.btn-delete-objet');
+            deleteButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const objetId = this.getAttribute('data-objet-id');
+                    deleteObjet(objetId);
+                });
             });
+            
         });
     </script>
 </body>

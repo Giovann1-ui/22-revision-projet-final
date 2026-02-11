@@ -11,10 +11,9 @@ $base_url = Flight::get('base_url');
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="<?= $base_url ?>assets/favicon-CvUZKS4z.svg">
     
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS local -->
+    <link rel="stylesheet" href="<?= $base_url ?>css/bootstrap.min.css">
     <link rel="stylesheet" href="<?= $base_url ?>bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="<?= $base_url ?>assets/main-QD_VOj1Y.css">
     
     <style>
         /* Éviter que le navbar cache le contenu */
@@ -150,12 +149,10 @@ $base_url = Flight::get('base_url');
         <?php endif; ?>
     </main>
 
-    <!-- Bootstrap Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="<?= $base_url ?>assets/vendor-bootstrap-C9iorZI5.js"></script>
-    <script src="<?= $base_url ?>assets/vendor-ui-CflGdlft.js"></script>
+    <!-- Bootstrap Bundle JS local -->
+    <script src="<?= $base_url ?>css/bootstrap.bundle.min.js" nonce="<?= Flight::get('csp_nonce') ?>"></script>
     
-    <script>
+    <script nonce="<?= Flight::get('csp_nonce') ?>">
         document.addEventListener('DOMContentLoaded', function() {
             // Initialiser les dropdowns Bootstrap
             var dropdownElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
