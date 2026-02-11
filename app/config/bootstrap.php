@@ -40,6 +40,39 @@ $config = require('config.php');
  */ 
 require('services.php');
 
+// Initialiser la session et l'utilisateur temporaire (pour le développement)
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Si aucun utilisateur n'est en session, on charge l'utilisateur par défaut (id=1)
+if (!isset($_SESSION['user'])) {
+    try {
+        $userModel = new \app\models\UserModel(Flight::db());
+        $user = $userModel->get_User_by_id(3);
+        
+        if ($user) {
+            $_SESSION['user'] = $user;
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_nom'] = $user['nom'];
+        } else {
+            $_SESSION['error_message'] = "Aucun utilisateur avec id=1 trouvé dans la base de données.";
+        }
+    } catch (Exception $e) {
+        // Si la connexion à la base échoue, créer un utilisateur temporaire pour tester
+        $_SESSION['error_message'] = "Erreur DB: " . $e->getMessage();
+        
+        // TEMPORAIRE : Créer un faux utilisateur pour tester l'interface
+        $_SESSION['user'] = [
+            'id' => 999,
+            'nom' => 'Utilisateur Test',
+            'mot_de_passe' => ''
+        ];
+        $_SESSION['user_id'] = 999;
+        $_SESSION['user_nom'] = 'Utilisateur Test';
+    }
+}
+
 // Whip out the ol' router and we'll pass that to the routes file
 $router = $app->router();
 

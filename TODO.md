@@ -21,7 +21,8 @@
 - [ ] page de connexion et d'inscription (utilisateur)
     - [ ] login
     - [ ] inscription
-#
+
+## Manantsoa 
 - [ ] page d'accueil
     - [ ] afficher les objets avec son propriétaire
     - [ ] afficher les membres
@@ -31,6 +32,9 @@
     - [ ] afficher les objets du membre
     - [ ] ajouter un objet
     - [ ] supprimer un objet
+
+##
+
 - [ ] page pour gerer les objets du membre
     - [ ] mofifier titre
     - [ ] modifier description

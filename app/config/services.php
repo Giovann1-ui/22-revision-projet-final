@@ -35,6 +35,8 @@ use Tracy\Debugger;
  *
  * For advanced options, see the plugin documentation above.
  **********************************************/
+// On utilise les sessions PHP natives - pas besoin de bibliothèque externe
+// Les sessions sont déjà démarrées dans bootstrap.php
 
 /*********************************************
  *           Tracy Debugger Setup            *
@@ -80,15 +82,15 @@ if (Debugger::$showBar === true && php_sapi_name() !== 'cli') {
 // Uncomment and configure the following for your database:
 
 // MySQL Example:
-// $dsn = 'mysql:host=' . $config['database']['host'] . ';dbname=' . $config['database']['dbname'] . ';charset=utf8mb4';
+$dsn = 'mysql:host=' . $config['database']['host'] . ';dbname=' . $config['database']['dbname'] . ';charset=utf8mb4';
 
 // SQLite Example:
 // $dsn = 'sqlite:' . $config['database']['file_path'];
 
 // Register Flight::db() service
 // In development, use PdoQueryCapture to log queries; in production, use PdoWrapper for performance.
-// $pdoClass = Debugger::$showBar === true ? PdoQueryCapture::class : PdoWrapper::class;
-// $app->register('db', $pdoClass, [ $dsn, $config['database']['user'] ?? null, $config['database']['password'] ?? null ]);
+$pdoClass = Debugger::$showBar === true ? PdoQueryCapture::class : PdoWrapper::class;
+$app->register('db', $pdoClass, [ $dsn, $config['database']['user'] ?? null, $config['database']['password'] ?? null ]);
 
 /**********************************************
  *         Third-Party Integrations           *

@@ -1,9 +1,0 @@
-CREATE DATABASE takalo;
-
-USE takalo;
-
-CREATE TABLE membres (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nom VARCHAR(255) NOT NULL,
-    mot_de_passe VARCHAR(255) NOT NULL
-);
