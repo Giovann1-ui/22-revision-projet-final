@@ -25,7 +25,7 @@ class ProfilController
         $user = $userModel->get_User_by_id($_SESSION['user_id']);
 
         // Récupérer les objets de l'utilisateur
-        $objets = $objetModel->get_Objects_by_membre($_SESSION['user_id']);
+        $objets = $objetModel->getObjectsByMembre($_SESSION['user_id']);
 
         // Compter les statistiques
         $stats = [

@@ -30,7 +30,7 @@ class ObjetController {
      */
     public function objetsByMembre($id_membre){
         $objetModel = new ObjetModel(Flight::db());
-        $objets = $objetModel->get_Objects_by_membre($id_membre);
+        $objets = $objetModel->getObjectsByMembre($id_membre);
         Flight::render('mes-objets', ['objets' => $objets]);
     }
 

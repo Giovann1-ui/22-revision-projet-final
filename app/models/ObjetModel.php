@@ -40,7 +40,7 @@ class ObjetModel
     /**
      * Récupère tous les objets d'un membre spécifique
      */
-    public function get_Objects_by_membre($id_membre)
+    public function getObjectsByMembre($id_membre)
     {
         $stmt = $this->db->prepare("SELECT O.*, C.nom as nom_categorie 
                                      FROM Objets O 
