@@ -103,6 +103,50 @@ class ObjetModel
     }
 
     /**
+     * Recherche des objets par mot-clé et/ou catégorie (exclut les objets du membre connecté)
+     */
+    public function searchObjects($keyword = '', $id_categorie = null, $id_membre_exclude = null)
+    {
+        $sql = "SELECT O.*, M.nom as nom_membre, C.nom as nom_categorie 
+                FROM Objets O 
+                JOIN Membres M ON O.id_membre = M.id 
+                JOIN Categories C ON O.id_categorie = C.id 
+                WHERE 1=1";
+        $params = [];
+
+        // Exclure les objets du membre connecté
+        if ($id_membre_exclude !== null) {
+            $sql .= " AND O.id_membre != :id_membre_exclude";
+            $params[':id_membre_exclude'] = (int) $id_membre_exclude;
+        }
+
+        // Recherche par mot-clé dans le titre ou la description
+        if (!empty($keyword)) {
+            $sql .= " AND (O.nom LIKE :keyword OR O.description LIKE :keyword)";
+            $params[':keyword'] = '%' . $keyword . '%';
+        }
+
+        // Filtre par catégorie
+        if (!empty($id_categorie)) {
+            $sql .= " AND O.id_categorie = :id_categorie";
+            $params[':id_categorie'] = (int) $id_categorie;
+        }
+
+        $sql .= " ORDER BY O.date_creation DESC";
+
+        $stmt = $this->db->prepare($sql);
+        foreach ($params as $key => $value) {
+            if (is_int($value)) {
+                $stmt->bindValue($key, $value, PDO::PARAM_INT);
+            } else {
+                $stmt->bindValue($key, $value, PDO::PARAM_STR);
+            }
+        }
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
      * Supprime un objet
      */
     public function deleteObject($id)

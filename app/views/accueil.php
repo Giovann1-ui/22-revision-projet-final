@@ -1,5 +1,8 @@
 <?php 
 $base_url = Flight::get('base_url');
+$categories = $categories ?? [];
+$keyword = $keyword ?? '';
+$selected_categorie = $selected_categorie ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
@@ -54,9 +57,6 @@ $base_url = Flight::get('base_url');
                                 <i class="bi bi-person-circle me-1"></i>
                                 <?= htmlspecialchars($_SESSION['user_nom']) ?>
                             </span></a>
-                            <a href="/mes-objets" class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-box me-1"></i>Mes objets
-                            </a>
                             <a href="/logout" class="btn btn-sm btn-outline-danger">
                                 <i class="bi bi-box-arrow-right me-1"></i>Déconnexion
                             </a>
@@ -80,21 +80,105 @@ $base_url = Flight::get('base_url');
             </div>
         </div>
 
+        <!-- Barre de recherche -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <form method="GET" action="/" class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="row g-3 align-items-end">
+                            <!-- Mot-clé -->
+                            <div class="col-md-5">
+                                <label for="keyword" class="form-label fw-semibold">
+                                    <i class="bi bi-search me-1"></i>Mot-clé
+                                </label>
+                                <input type="text" class="form-control" id="keyword" name="keyword" 
+                                       placeholder="Rechercher dans le titre, description..." 
+                                       value="<?= htmlspecialchars($keyword) ?>">
+                            </div>
+                            <!-- Catégorie -->
+                            <div class="col-md-4">
+                                <label for="categorie" class="form-label fw-semibold">
+                                    <i class="bi bi-tag me-1"></i>Catégorie
+                                </label>
+                                <select class="form-select" id="categorie" name="categorie">
+                                    <option value="">Tous</option>
+                                    <?php foreach ($categories as $cat): ?>
+                                        <option value="<?= $cat['id'] ?>" <?= ($selected_categorie == $cat['id']) ? 'selected' : '' ?>>
+                                            <?= htmlspecialchars($cat['nom']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                            <!-- Bouton Rechercher -->
+                            <div class="col-md-3 d-flex gap-2">
+                                <button type="submit" class="btn btn-primary flex-grow-1">
+                                    <i class="bi bi-search me-1"></i>Rechercher
+                                </button>
+                                <?php if (!empty($keyword) || !empty($selected_categorie)): ?>
+                                    <a href="/" class="btn btn-outline-secondary" title="Réinitialiser">
+                                        <i class="bi bi-x-lg"></i>
+                                    </a>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <?php if (!empty($keyword) || !empty($selected_categorie)): ?>
+            <div class="row mb-3">
+                <div class="col-12">
+                    <div class="d-flex align-items-center gap-2">
+                        <span class="text-muted">
+                            <i class="bi bi-funnel me-1"></i>
+                            <?= count($objets) ?> résultat(s) trouvé(s)
+                        </span>
+                        <?php if (!empty($keyword)): ?>
+                            <span class="badge bg-primary">
+                                Mot-clé : « <?= htmlspecialchars($keyword) ?> »
+                            </span>
+                        <?php endif; ?>
+                        <?php if (!empty($selected_categorie)): ?>
+                            <?php foreach ($categories as $cat): ?>
+                                <?php if ($cat['id'] == $selected_categorie): ?>
+                                    <span class="badge bg-info text-dark">
+                                        Catégorie : <?= htmlspecialchars($cat['nom']) ?>
+                                    </span>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
+
         <!-- Liste des objets -->
         <div class="row g-4">
             <?php if (empty($objets)): ?>
                 <div class="col-12">
                     <div class="card text-center py-5">
                         <div class="card-body">
-                            <i class="bi bi-inbox display-1 text-muted"></i>
-                            <h5 class="mt-3">Aucun objet disponible</h5>
-                            <p class="text-muted">
-                                <?php if (isset($_SESSION['user'])): ?>
-                                    Les autres membres n'ont pas encore ajouté d'objets
-                                <?php else: ?>
-                                    Connectez-vous pour voir les objets disponibles
-                                <?php endif; ?>
-                            </p>
+                            <?php if (!empty($keyword) || !empty($selected_categorie)): ?>
+                                <i class="bi bi-search display-1 text-muted"></i>
+                                <h5 class="mt-3">Aucun résultat trouvé</h5>
+                                <p class="text-muted">
+                                    Essayez avec d'autres mots-clés ou une autre catégorie
+                                </p>
+                                <a href="/" class="btn btn-outline-primary mt-2">
+                                    <i class="bi bi-arrow-counterclockwise me-1"></i>Réinitialiser la recherche
+                                </a>
+                            <?php else: ?>
+                                <i class="bi bi-inbox display-1 text-muted"></i>
+                                <h5 class="mt-3">Aucun objet disponible</h5>
+                                <p class="text-muted">
+                                    <?php if (isset($_SESSION['user'])): ?>
+                                        Les autres membres n'ont pas encore ajouté d'objets
+                                    <?php else: ?>
+                                        Connectez-vous pour voir les objets disponibles
+                                    <?php endif; ?>
+                                </p>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -119,7 +203,7 @@ $base_url = Flight::get('base_url');
                                         <i class="bi bi-tag me-1"></i>
                                         <?= number_format($objet['prix_estimatif'], 2) ?> €
                                     </span>
-                                    <a href="/objets/<?= $objet['id'] ?>" class="btn btn-outline-primary btn-sm">
+                                    <a href="#" class="btn btn-outline-primary btn-sm">
                                         <i class="bi bi-eye me-1"></i>Voir
                                     </a>
                                 </div>
@@ -141,7 +225,7 @@ $base_url = Flight::get('base_url');
         <?php if (isset($_SESSION['user'])): ?>
             <div class="row mt-5">
                 <div class="col-12 text-center">
-                    <a href="/mes-objets" class="btn btn-primary btn-lg">
+                    <a href="/profile" class="btn btn-primary btn-lg">
                         <i class="bi bi-box-seam me-2"></i>Gérer mes objets
                     </a>
                 </div>

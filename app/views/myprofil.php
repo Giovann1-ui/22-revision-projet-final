@@ -61,7 +61,6 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
                         <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item active" href="/profile"><i class="bi bi-person me-2"></i>Profil</a></li>
                             <li><a class="dropdown-item" href="/"><i class="bi bi-house me-2"></i>Accueil</a></li>
-                            <li><a class="dropdown-item" href="/mes-objets"><i class="bi bi-box me-2"></i>Mes objets</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right me-2"></i>Déconnexion</a></li>
                         </ul>
@@ -188,11 +187,11 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
                                     <i class="bi bi-clock me-1"></i>
                                     Ajouté le <?= date('d/m/Y', strtotime($objet['date_creation'])) ?>
                                 </small>
-                                <a href="/mes-objets/modifier/<?= $objet['id'] ?>" 
+                                <!-- <a href="/mes-objets/modifier/<?= $objet['id'] ?>" 
                                    class="btn btn-sm btn-outline-primary"
                                    title="Modifier cet objet">
                                     <i class="bi bi-pencil me-1"></i>Modifier
-                                </a>
+                                </a> -->
                             </div>
                         </div>
                     </div>
