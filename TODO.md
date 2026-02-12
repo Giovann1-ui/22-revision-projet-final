@@ -30,7 +30,9 @@
     - [ ] afficher les objets du membre
     - [ ] ajouter un objet
     - [ ] supprimer un objet
-
+- [ ] Recherche
+    - [ ] par catégories
+    - [ ] mot clés
 ##
 
 - [ ] page pour gerer les objets du membre
