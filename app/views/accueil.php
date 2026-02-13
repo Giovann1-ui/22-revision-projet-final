@@ -103,6 +103,31 @@ $base_url = Flight::get('base_url');
                 <?php foreach ($objets as $objet): ?>
                     <div class="col-md-4">
                         <div class="card h-100 shadow-sm">
+                            <?php if (!empty($objet['images']) && $objet['images'][0]): ?>
+                                <div id="carousel-objet-accueil-<?= $objet['id'] ?>" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        <?php foreach ($objet['images'] as $key => $image): ?>
+                                            <div class="carousel-item <?= $key == 0 ? 'active' : '' ?>">
+                                                <img src="assets/images/<?= htmlspecialchars($image) ?>" class="d-block w-100" alt="Image de <?= htmlspecialchars($objet['nom']) ?>" style="height: 200px; object-fit: cover; border-top-left-radius: var(--bs-card-inner-border-radius); border-top-right-radius: var(--bs-card-inner-border-radius);">
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <?php if (count($objet['images']) > 1): ?>
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-objet-accueil-<?= $objet['id'] ?>" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-objet-accueil-<?= $objet['id'] ?>" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
+                            <?php else: ?>
+                                <div class="d-flex align-items-center justify-content-center bg-light" style="height: 200px; border-top-left-radius: var(--bs-card-inner-border-radius); border-top-right-radius: var(--bs-card-inner-border-radius);">
+                                    <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                                </div>
+                            <?php endif; ?>
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-start mb-3">
                                     <span class="badge bg-primary"><?= htmlspecialchars($objet['nom_categorie']) ?></span>
@@ -152,9 +177,7 @@ $base_url = Flight::get('base_url');
 
     <!-- Bootstrap Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="<?= $base_url ?>assets/vendor-bootstrap-C9iorZI5.js"></script>
-    <script src="<?= $base_url ?>assets/vendor-ui-CflGdlft.js"></script>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Initialiser les dropdowns Bootstrap

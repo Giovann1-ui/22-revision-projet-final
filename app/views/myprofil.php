@@ -1,4 +1,4 @@
-<?php 
+<?php
 $base_url = Flight::get('base_url');
 $user = $user ?? null;
 $objets = $objets ?? [];
@@ -6,25 +6,26 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Profil - Takalo</title>
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="<?= $base_url ?>assets/favicon-CvUZKS4z.svg">
-    
+
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="<?= $base_url ?>bootstrap-icons/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="<?= $base_url ?>assets/main-QD_VOj1Y.css">
-    
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/bootstrap-icons/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/assets/main-QD_VOj1Y.css">
+
     <style>
         /* Éviter que le navbar cache le contenu */
         body {
             padding-top: 80px !important;
         }
-        
+
         .admin-header {
             position: fixed !important;
             top: 0 !important;
@@ -33,13 +34,14 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
             width: 100% !important;
             z-index: 1030 !important;
         }
-        
+
         .admin-header .navbar {
             margin-bottom: 0 !important;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
+
 <body>
     <!-- Header -->
     <header class="admin-header">
@@ -60,11 +62,16 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
                             <i class="bi bi-chevron-down ms-1"></i>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item active" href="/profile"><i class="bi bi-person me-2"></i>Profil</a></li>
+                            <li><a class="dropdown-item active" href="/profile"><i
+                                        class="bi bi-person me-2"></i>Profil</a></li>
                             <li><a class="dropdown-item" href="/"><i class="bi bi-house me-2"></i>Accueil</a></li>
-                            <li><a class="dropdown-item" href="/mes-objets"><i class="bi bi-box me-2"></i>Mes objets</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right me-2"></i>Déconnexion</a></li>
+                            <li><a class="dropdown-item" href="/mes-objets"><i class="bi bi-box me-2"></i>Mes objets</a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="/logout"><i
+                                        class="bi bi-box-arrow-right me-2"></i>Déconnexion</a></li>
                         </ul>
                     </div>
                 </div>
@@ -81,8 +88,8 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
                     <div class="card-body p-4">
                         <div class="row align-items-center">
                             <div class="col-auto">
-                                <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center" 
-                                     style="width: 100px; height: 100px;">
+                                <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                                    style="width: 100px; height: 100px;">
                                     <i class="bi bi-person-circle text-primary" style="font-size: 4rem;"></i>
                                 </div>
                             </div>
@@ -92,7 +99,8 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
                                     <i class="bi bi-calendar3 me-1"></i>
                                     Membre depuis <?= date('F Y', strtotime($user['date_creation'] ?? 'now')) ?>
                                 </p>
-                                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+                                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
+                                    data-bs-target="#editProfileModal">
                                     <i class="bi bi-pencil me-1"></i>Modifier le profil
                                 </button>
                             </div>
@@ -163,12 +171,37 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
                 <?php foreach ($objets as $objet): ?>
                     <div class="col-md-4">
                         <div class="card h-100 shadow-sm">
+                            <?php if (!empty($objet['images']) && $objet['images'][0]): ?>
+                                <div id="carousel-objet-profil-<?= $objet['id'] ?>" class="carousel slide" data-bs-ride="carousel">
+                                    <div class="carousel-inner">
+                                        <?php foreach ($objet['images'] as $key => $image): ?>
+                                            <div class="carousel-item <?= $key == 0 ? 'active' : '' ?>">
+                                                <img src="<?= 'assets/images/' . htmlspecialchars($image['url']) ?>" class="d-block w-100" alt="Image de <?= htmlspecialchars($objet['nom']) ?>" style="height: 200px; object-fit: cover; border-top-left-radius: var(--bs-card-inner-border-radius); border-top-right-radius: var(--bs-card-inner-border-radius);">
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <?php if (count($objet['images']) > 1): ?>
+                                        <button class="carousel-control-prev" type="button" data-bs-target="#carousel-objet-profil-<?= $objet['id'] ?>" data-bs-slide="prev">
+                                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Previous</span>
+                                        </button>
+                                        <button class="carousel-control-next" type="button" data-bs-target="#carousel-objet-profil-<?= $objet['id'] ?>" data-bs-slide="next">
+                                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                            <span class="visually-hidden">Next</span>
+                                        </button>
+                                    <?php endif; ?>
+                                </div>
+                            <?php else: ?>
+                                <div class="d-flex align-items-center justify-content-center bg-light" style="height: 200px; border-top-left-radius: var(--bs-card-inner-border-radius); border-top-right-radius: var(--bs-card-inner-border-radius);">
+                                    <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                                </div>
+                            <?php endif; ?>
                             <div class="card-body">
                                 <div class="d-flex justify-content-between align-items-start mb-3">
                                     <span class="badge bg-primary"><?= htmlspecialchars($objet['nom_categorie']) ?></span>
                                     <div class="dropdown">
-                                        <button class="btn btn-sm btn-link text-muted" type="button" 
-                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                        <button class="btn btn-sm btn-link text-muted" type="button" data-bs-toggle="dropdown"
+                                            aria-expanded="false">
                                             <i class="bi bi-three-dots-vertical"></i>
                                         </button>
                                         <ul class="dropdown-menu dropdown-menu-end">
@@ -178,18 +211,20 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
                                                 </a>
                                             </li>
                                             <li>
-                                                <a class="dropdown-item text-danger" href="#" 
-                                                   onclick="deleteObjet(<?= $objet['id'] ?>); return false;">
+                                                <a class="dropdown-item text-danger" href="#"
+                                                    onclick="deleteObjet(<?= $objet['id'] ?>); return false;">
                                                     <i class="bi bi-trash me-2"></i>Supprimer
                                                 </a>
                                             </li>
                                         </ul>
                                     </div>
                                 </div>
-                                
-                                <h5 class="card-title"><?= htmlspecialchars($objet['nom']) ?></h5>
-                                <p class="card-text text-muted"><?= htmlspecialchars(substr($objet['description'], 0, 100)) ?>...</p>
-                                
+
+                                <h5 class="card-title"><a href="/mes-objets/edit?idObjet=<?= $objet['id'] ?>"><?= htmlspecialchars($objet['nom']) ?></a></h5>
+                                <p class="card-text text-muted">
+                                    <?= htmlspecialchars(substr($objet['description'], 0, 100)) ?>...
+                                </p>
+
                                 <div class="d-flex justify-content-between align-items-center mt-3">
                                     <span class="text-success fw-bold">
                                         <i class="bi bi-tag me-1"></i>
@@ -197,7 +232,7 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
                                     </span>
                                 </div>
                             </div>
-                            
+
                             <div class="card-footer bg-transparent">
                                 <small class="text-muted">
                                     <i class="bi bi-clock me-1"></i>
@@ -212,7 +247,8 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
     </main>
 
     <!-- Modal Modifier Profil -->
-    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -225,8 +261,8 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
                     <div class="modal-body">
                         <div class="mb-3">
                             <label for="userName" class="form-label">Nom d'utilisateur</label>
-                            <input type="text" class="form-control" id="userName" name="nom" 
-                                   value="<?= htmlspecialchars($user['nom']) ?>" required>
+                            <input type="text" class="form-control" id="userName" name="nom"
+                                value="<?= htmlspecialchars($user['nom']) ?>" required>
                         </div>
                         <div class="alert alert-info">
                             <i class="bi bi-info-circle me-2"></i>
@@ -246,17 +282,15 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
 
     <!-- Bootstrap Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="<?= $base_url ?>assets/vendor-bootstrap-C9iorZI5.js"></script>
-    <script src="<?= $base_url ?>assets/vendor-ui-CflGdlft.js"></script>
-    
+
     <script>
         // Modifier le profil
-        document.getElementById('editProfileForm').addEventListener('submit', async function(e) {
+        document.getElementById('editProfileForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-            
+
             const formData = new FormData(this);
             const data = Object.fromEntries(formData.entries());
-            
+
             try {
                 const response = await fetch('/profile/update', {
                     method: 'POST',
@@ -265,13 +299,13 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
                     },
                     body: JSON.stringify(data)
                 });
-                
+
                 const result = await response.json();
-                
+
                 if (result.success) {
                     // Fermer le modal
                     bootstrap.Modal.getInstance(document.getElementById('editProfileModal')).hide();
-                    
+
                     // Afficher un message de succès et recharger la page
                     alert('Profil mis à jour avec succès');
                     location.reload();
@@ -283,20 +317,20 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
                 alert('Une erreur est survenue');
             }
         });
-        
+
         // Supprimer un objet
         async function deleteObjet(id) {
             if (!confirm('Êtes-vous sûr de vouloir supprimer cet objet ?')) {
                 return;
             }
-            
+
             try {
                 const response = await fetch(`/mes-objets/supprimer/${id}`, {
                     method: 'DELETE'
                 });
-                
+
                 const result = await response.json();
-                
+
                 if (result.success) {
                     alert('Objet supprimé avec succès');
                     location.reload();
@@ -308,9 +342,9 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
                 alert('Une erreur est survenue');
             }
         }
-        
+
         // Initialiser les dropdowns Bootstrap
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             var dropdownElementList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
             dropdownElementList.map(function (dropdownToggleEl) {
                 return new bootstrap.Dropdown(dropdownToggleEl);
@@ -318,4 +352,5 @@ $stats = $stats ?? ['total_objets' => 0, 'valeur_totale' => 0];
         });
     </script>
 </body>
+
 </html>

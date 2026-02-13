@@ -35,16 +35,24 @@
 
 ##
 
-- [ ] page pour gerer les objets du membre
-    - [ ] mofifier titre
-    - [ ] modifier description
-    - [ ] modifier / ajouter / supprimer image
-    - [ ] modifiere prix estimatif
-- Page pour voir la liste des objets des autres utilisateurs
-    - [ ] afficher les objets
-    - [ ] ficher d'objets
-        - [ ] afficher les informations de l'objet
-        - [ ] bouton pour proposer un échange
-- Page pour voir les propositions d'échange
-    - [ ] afficher les propositions d'échange
-    - [ ] accepter ou refuser une proposition d'échange
+- [90] page pour gerer les objets du membre
+    - [x] mofifier titre
+    - [x] modifier description
+    - [x] ajouter image
+    - [ ] supprimer image
+    - [x] modifier prix estimatif
+    - [x] afficher correctement les images multiples
+- [x] Page pour voir la liste des objets des autres utilisateurs
+    - [x] afficher les objets
+    - [x] ficher d'objets
+        - [x] afficher les informations de l'objet
+        - [x] bouton pour proposer un échange
+    - [x] fonctionnalite echange
+        - [x] selectionner un objet de l'utilisateur
+- [x] Page pour voir les propositions d'échange
+    - [x] afficher les propositions d'échange
+    - [x] bouton accepter ou refuser une proposition d'échange
+    - [x] fonctionnalite
+        - [x] annuler une proposition d'échange
+        - [x] refuser une proposition d'échange
+        - [x] accepter une proposition d'échange

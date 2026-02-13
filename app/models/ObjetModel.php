@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace app\models;
 use Flight;
 use PDO;
@@ -12,14 +12,29 @@ class ObjetModel
         $this->db = $db;
     }
 
-    public function get_All_Objects()
+    public function get_image_objet_by_id($id_objet)
     {
-        $stmt = $this->db->prepare("SELECT O.*, M.nom as nom_membre, C.nom as nom_categorie 
-                                     FROM Objets O 
-                                     JOIN Membres M ON O.id_membre = M.id 
-                                     JOIN Categories C ON O.id_categorie = C.id");
+        $stmt = $this->db->prepare("SELECT url FROM Images WHERE id_objet = :id_objet");
+        $stmt->bindValue(':id_objet', (int) $id_objet, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function get_All_Objects()
+    {
+        $stmt = $this->db->prepare("SELECT O.*, M.nom as nom_membre, C.nom as nom_categorie,
+                                     GROUP_CONCAT(I.url) as images
+                                     FROM Objets O 
+                                     JOIN Membres M ON O.id_membre = M.id 
+                                     JOIN Categories C ON O.id_categorie = C.id
+                                     LEFT JOIN Images I ON O.id = I.id_objet
+                                     GROUP BY O.id");
+        $stmt->execute();
+        $objets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($objets as &$objet) {
+            $objet['images'] = $objet['images'] ? explode(',', $objet['images']) : [];
+        }
+        return $objets;
     }
 
     /**
@@ -27,14 +42,19 @@ class ObjetModel
      */
     public function get_Object_by_id($id)
     {
-        $stmt = $this->db->prepare("SELECT O.*, M.nom as nom_membre, C.nom as nom_categorie 
+        $stmt = $this->db->prepare("SELECT O.*, M.nom as nom_membre, C.nom as nom_categorie,
+                                     GROUP_CONCAT(I.url) as images
                                      FROM Objets O 
                                      JOIN Membres M ON O.id_membre = M.id 
                                      JOIN Categories C ON O.id_categorie = C.id 
-                                     WHERE O.id = :id");
+                                     LEFT JOIN Images I ON O.id = I.id_objet
+                                     WHERE O.id = :id
+                                     GROUP BY O.id");
         $stmt->bindValue(':id', (int) $id, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $objet = $stmt->fetch(PDO::FETCH_ASSOC);
+        $objet['images'] = $this->get_image_objet_by_id($id);
+        return $objet;
     }
 
     /**
@@ -42,13 +62,25 @@ class ObjetModel
      */
     public function get_Objects_by_membre($id_membre)
     {
-        $stmt = $this->db->prepare("SELECT O.*, C.nom as nom_categorie 
+        $stmt = $this->db->prepare("SELECT O.*, M.nom as nom_membre, C.nom as nom_categorie,
+                                     GROUP_CONCAT(I.url) as images
                                      FROM Objets O 
+                                     JOIN Membres M ON O.id_membre = M.id
                                      JOIN Categories C ON O.id_categorie = C.id 
-                                     WHERE O.id_membre = :id_membre");
+                                     LEFT JOIN Images I ON O.id = I.id_objet
+                                     WHERE O.id_membre = :id_membre
+                                     GROUP BY O.id");
         $stmt->bindValue(':id_membre', (int) $id_membre, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $objets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($objets as &$objet) {
+            $images = $objet['images'] ? explode(',', $objet['images']) : [];
+            // Transformer en tableau d'objets avec propriété 'url'
+            $objet['images'] = array_map(function ($url) {
+                return ['url' => $url];
+            }, $images);
+        }
+        return $objets;
     }
 
     /**
@@ -56,14 +88,21 @@ class ObjetModel
      */
     public function get_Objects_not_from_membre($id_membre)
     {
-        $stmt = $this->db->prepare("SELECT O.*, M.nom as nom_membre, C.nom as nom_categorie 
+        $stmt = $this->db->prepare("SELECT O.*, M.nom as nom_membre, C.nom as nom_categorie,
+                                     GROUP_CONCAT(I.url) as images
                                      FROM Objets O 
                                      JOIN Membres M ON O.id_membre = M.id 
                                      JOIN Categories C ON O.id_categorie = C.id 
-                                     WHERE O.id_membre != :id_membre");
+                                     LEFT JOIN Images I ON O.id = I.id_objet
+                                     WHERE O.id_membre != :id_membre
+                                     GROUP BY O.id");
         $stmt->bindValue(':id_membre', (int) $id_membre, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $objets = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($objets as &$objet) {
+            $objet['images'] = $objet['images'] ? explode(',', $objet['images']) : [];
+        }
+        return $objets;
     }
 
     /**
@@ -79,7 +118,7 @@ class ObjetModel
         $stmt->bindValue(':id_categorie', (int) $data['id_categorie'], PDO::PARAM_INT);
         $stmt->bindValue(':id_membre', (int) $data['id_membre'], PDO::PARAM_INT);
         $stmt->execute();
-        
+
         return $this->db->lastInsertId();
     }
 
@@ -98,7 +137,7 @@ class ObjetModel
         $stmt->bindValue(':id_categorie', (int) $data['id_categorie'], PDO::PARAM_INT);
         $stmt->bindValue(':id', (int) $id, PDO::PARAM_INT);
         $stmt->execute();
-        
+
         return $stmt->rowCount();
     }
 
@@ -110,11 +149,59 @@ class ObjetModel
         $stmt = $this->db->prepare("DELETE FROM Objets WHERE id = :id");
         $stmt->bindValue(':id', (int) $id, PDO::PARAM_INT);
         $stmt->execute();
-        
+
         return $stmt->rowCount();
     }
 
 
+    public function addImageObject($idObjet, $url)
+    {
+        $stmt = $this->db->prepare("INSERT INTO Images (url, id_objet) VALUES (:url, :id_objet)");
+        $stmt->bindValue(':url', $url, PDO::PARAM_STR);
+        $stmt->bindValue(':id_objet', (int) $idObjet, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 
+    public function uploadImageToApp($image)
+    {
+        $uploadDir = '/assets/images/';
+        $maxSize = 2 * 1024 * 1024; // 2 Mo
+        $allowedMimeTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+        // Vérifie si un fichier est soumis
+        if ($image != NULL) {
+            $file = $image;
+            if ($file['error'] !== UPLOAD_ERR_OK) {
+                // die('Erreur lors de l’upload : ' . $file['error']);
+                return NULL;
+            }
+            // Vérifie la taille
+            if ($file['size'] > $maxSize) {
+                die('Le fichier est trop volumineux.');
+            }
+            // Vérifie le type MIME avec `finfo`
+            $finfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mime = finfo_file($finfo, $file['tmp_name']);
+            finfo_close($finfo);
+            if (!in_array($mime, $allowedMimeTypes)) {
+                die('Type de fichier non autorisé : ' . $mime);
+            }
+            // renommer le fichier
+            $originalName = pathinfo($file['name'], PATHINFO_FILENAME);
+            $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+            $newName = $originalName . '_' . uniqid() . '.' . $extension;
+            // Déplace le fichier
+            if (move_uploaded_file($file['tmp_name'], $uploadDir . $newName)) {
+                echo "Fichier uploadé avec succès : " . $newName;
+
+
+                return $newName;
+            } else {
+                echo "Échec du déplacement du fichier.";
+            }
+        } else {
+            echo "Aucun fichier reçu.";
+            return NULL;
+        }
+    }
 }
 ?>

@@ -5,12 +5,14 @@ use app\models\ObjetModel;
 use app\models\CategorieModel;
 use Flight;
 
-class ObjetController {
+class ObjetController
+{
 
     /**
      * Affiche tous les objets avec leurs propriétaires
      */
-    public function allObjets(){
+    public function allObjets()
+    {
         $objetModel = new ObjetModel(Flight::db());
         $objets = $objetModel->get_All_Objects();
         Flight::render('objets', ['objets' => $objets]);
@@ -19,25 +21,28 @@ class ObjetController {
     /**
      * Affiche un objet spécifique par son ID
      */
-    public function objet($id){
+    public function objet($id)
+    {
         $objetModel = new ObjetModel(Flight::db());
         $objet = $objetModel->get_Object_by_id($id);
-        Flight::render('objet', ['objet' => $objet]);
+        Flight::render('objet-detail', ['objet' => $objet]);
     }
 
     /**
      * Affiche tous les objets d'un membre spécifique
      */
-    public function objetsByMembre($id_membre){
+    public function objetsByMembre($id_membre)
+    {
         $objetModel = new ObjetModel(Flight::db());
         $objets = $objetModel->get_Objects_by_membre($id_membre);
-        Flight::render('mes-objets', ['objets' => $objets]);
+        Flight::render('objets-membre', ['objets' => $objets]);
     }
 
     /**
      * Affiche le formulaire pour ajouter un objet
      */
-    public function showAddObjetForm(){
+    public function showAddObjetForm()
+    {
         // Vérifier si l'utilisateur est connecté
         if (!isset($_SESSION['user_id'])) {
             Flight::redirect('/login');
@@ -51,14 +56,15 @@ class ObjetController {
             // En cas d'erreur, utiliser un tableau vide
             $categories = [];
         }
-        
+
         Flight::render('ajouterObjet', ['categories' => $categories]);
     }
 
     /**
      * Crée un nouvel objet
      */
-    public function createObjet(){
+    public function createObjet()
+    {
         // Vérifier si l'utilisateur est connecté
         if (!isset($_SESSION['user_id'])) {
             Flight::redirect('/login');
@@ -66,12 +72,12 @@ class ObjetController {
         }
 
         $objetModel = new ObjetModel(Flight::db());
-        
+
         $nom = Flight::request()->data->nom ?? '';
         $description = Flight::request()->data->description ?? '';
         $prix_estimatif = Flight::request()->data->prix_estimatif ?? 0;
         $id_categorie = Flight::request()->data->id_categorie ?? 0;
-        
+
         // Validation
         if (empty($nom) || empty($description) || $prix_estimatif <= 0 || $id_categorie <= 0) {
             $categorieModel = new CategorieModel(Flight::db());
@@ -82,7 +88,7 @@ class ObjetController {
             ]);
             return;
         }
-        
+
         $data = [
             'nom' => $nom,
             'description' => $description,
@@ -90,7 +96,7 @@ class ObjetController {
             'id_categorie' => $id_categorie,
             'id_membre' => $_SESSION['user_id']
         ];
-        
+
         $objetModel->createObject($data);
         Flight::redirect('/profile');
     }
@@ -98,42 +104,44 @@ class ObjetController {
     /**
      * Met à jour un objet existant
      */
-    public function updateObjet($id){
-        // Vérifier si l'utilisateur est connecté
-        if (!isset($_SESSION['user_id'])) {
-            Flight::json(['success' => false, 'message' => 'Non connecté'], 401);
-            return;
-        }
+    // public function updateObjet($id)
+    // {
+    //     // Vérifier si l'utilisateur est connecté
+    //     if (!isset($_SESSION['user_id'])) {
+    //         Flight::json(['success' => false, 'message' => 'Non connecté'], 401);
+    //         return;
+    //     }
 
-        $objetModel = new ObjetModel(Flight::db());
-        
-        // Vérifier que l'objet appartient à l'utilisateur
-        $objet = $objetModel->get_Object_by_id($id);
-        if (!$objet || $objet['id_membre'] != $_SESSION['user_id']) {
-            Flight::json(['success' => false, 'message' => 'Objet non trouvé ou accès refusé'], 403);
-            return;
-        }
-        
-        $nom = Flight::request()->data->nom ?? '';
-        $description = Flight::request()->data->description ?? '';
-        $prix_estimatif = Flight::request()->data->prix_estimatif ?? 0;
-        $id_categorie = Flight::request()->data->id_categorie ?? 1;
-        
-        $data = [
-            'nom' => $nom,
-            'description' => $description,
-            'prix_estimatif' => $prix_estimatif,
-            'id_categorie' => $id_categorie
-        ];
-        
-        $objetModel->updateObject($id, $data);
-        Flight::json(['success' => true, 'message' => 'Objet mis à jour']);
-    }
+    //     $objetModel = new ObjetModel(Flight::db());
+
+    //     // Vérifier que l'objet appartient à l'utilisateur
+    //     $objet = $objetModel->get_Object_by_id($id);
+    //     if (!$objet || $objet['id_membre'] != $_SESSION['user_id']) {
+    //         Flight::json(['success' => false, 'message' => 'Objet non trouvé ou accès refusé'], 403);
+    //         return;
+    //     }
+
+    //     $nom = Flight::request()->data->nom ?? '';
+    //     $description = Flight::request()->data->description ?? '';
+    //     $prix_estimatif = Flight::request()->data->prix_estimatif ?? 0;
+    //     $id_categorie = Flight::request()->data->id_categorie ?? 1;
+
+    //     $data = [
+    //         'nom' => $nom,
+    //         'description' => $description,
+    //         'prix_estimatif' => $prix_estimatif,
+    //         'id_categorie' => $id_categorie
+    //     ];
+
+    //     $objetModel->updateObject($id, $data);
+    //     Flight::json(['success' => true, 'message' => 'Objet mis à jour']);
+    // }
 
     /**
      * Supprime un objet
      */
-    public function deleteObjet($id){
+    public function deleteObjet($id)
+    {
         // Vérifier si l'utilisateur est connecté
         if (!isset($_SESSION['user_id'])) {
             Flight::json(['success' => false, 'message' => 'Non connecté'], 401);
@@ -141,14 +149,14 @@ class ObjetController {
         }
 
         $objetModel = new ObjetModel(Flight::db());
-        
+
         // Vérifier que l'objet appartient à l'utilisateur
         $objet = $objetModel->get_Object_by_id($id);
         if (!$objet || $objet['id_membre'] != $_SESSION['user_id']) {
             Flight::json(['success' => false, 'message' => 'Objet non trouvé ou accès refusé'], 403);
             return;
         }
-        
+
         $objetModel->deleteObject($id);
         Flight::json(['success' => true, 'message' => 'Objet supprimé']);
     }
@@ -156,10 +164,56 @@ class ObjetController {
     /**
      * Affiche les objets des autres utilisateurs (pas ceux du membre connecté)
      */
-    public function objetsAutresUtilisateurs($id_membre){
+    public function objetsAutresUtilisateurs($id_membre)
+    {
         $objetModel = new ObjetModel(Flight::db());
         $objets = $objetModel->get_Objects_not_from_membre($id_membre);
         Flight::render('objets-echange', ['objets' => $objets]);
     }
+
+    public function editObjet()
+    {
+        $idObjet = $_GET['idObjet'] ?? 0;
+        $objetModel = new ObjetModel(Flight::db());
+        $objet = $objetModel->get_Object_by_id($idObjet);
+        Flight::render('editerObjet', ['objet' => $objet]);
+    }
+
+    public function addImageObject()
+    {
+        if (!isset($_FILES['image']) || empty($_FILES['image']['name'])) {
+            return;
+        }
+        $idObjet = $_POST['idObjet'] ?? 0;
+
+        if ($idObjet <= 0) {
+            return;
+        }
+
+        $objetModel = new ObjetModel(Flight::db());
+        $imageName = $objetModel->uploadImageToApp($_FILES['image']);
+
+        // Vérifier que l'upload a réussi avant d'insérer en base
+        if ($imageName !== NULL && $imageName !== '') {
+            $objetModel->addImageObject($idObjet, $imageName);
+        }
+    }
+
+    public function updateObjet()
+    {
+        $this->addImageObject();
+        $idObjet = $_POST['idObjet'] ?? 0;
+        $nom = $_POST['nom'] ?? '';
+        $description = $_POST['description'] ?? '';
+        $prix_estimatif = $_POST['prix_estimatif'] ?? 0;
+
+        $objetModel = new ObjetModel(Flight::db());
+        $objetModel->updateObject($idObjet, [
+            'nom' => $nom,
+            'description' => $description,
+            'prix_estimatif' => $prix_estimatif,
+            'id_categorie' => 1 // TODO : ajouter la catégorie dans le formulaire d'édition
+        ]);
+        Flight::redirect('/mes-objets/edit?idObjet=' . $idObjet);
+    }
 }
-?>

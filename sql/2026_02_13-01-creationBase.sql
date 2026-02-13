@@ -61,15 +61,39 @@ CREATE TABLE IF NOT EXISTS Statut_Proposition (
 -- Table Propositions
 CREATE TABLE IF NOT EXISTS Propositions (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    id_objet1 INT NOT NULL,
-    id_objet2 INT NOT NULL,
-    id_proprietaire1 INT NOT NULL,
-    id_proprietaire2 INT NOT NULL,
+    id_objet_propose INT NOT NULL,
+    id_objet_demande INT NOT NULL,
+    id_membre_proposeur INT NOT NULL,
+    id_membre_receveur INT NOT NULL,
     id_statut_proposition INT NOT NULL,
     date_proposition TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_objet1) REFERENCES Objets(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_objet2) REFERENCES Objets(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_proprietaire1) REFERENCES Membres(id) ON DELETE CASCADE,
-    FOREIGN KEY (id_proprietaire2) REFERENCES Membres(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_objet_propose) REFERENCES Objets(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_objet_demande) REFERENCES Objets(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_membre_proposeur) REFERENCES Membres(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_membre_receveur) REFERENCES Membres(id) ON DELETE CASCADE,
     FOREIGN KEY (id_statut_proposition) REFERENCES Statut_Proposition(id) ON DELETE CASCADE
+);
+-- Table Historique_Echanges
+CREATE TABLE IF NOT EXISTS Historique_Echanges (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_proposition INT NOT NULL,
+    id_objet_propose INT NOT NULL,
+    id_objet_demande INT NOT NULL,
+    id_membre_proposeur INT NOT NULL,
+    id_membre_receveur INT NOT NULL,
+    date_echange TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_proposition) REFERENCES Propositions(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_objet_propose) REFERENCES Objets(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_objet_demande) REFERENCES Objets(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_membre_proposeur) REFERENCES Membres(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_membre_receveur) REFERENCES Membres(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS Historique_Proprietaire_Objet (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_objet INT NOT NULL,
+    id_membre INT NOT NULL,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_objet) REFERENCES Objets(id) ON DELETE CASCADE,
+    FOREIGN KEY (id_membre) REFERENCES Membres(id) ON DELETE CASCADE
 );
