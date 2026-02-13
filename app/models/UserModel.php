@@ -39,5 +39,14 @@ class UserModel
         
         return null;
     }
+
+    public function createUser(array $data)
+    {
+        $stmt = $this->db->prepare("INSERT INTO membres (nom, mot_de_passe, carac) VALUES (:nom, :mot_de_passe, 'user')");
+        $stmt->bindValue(':nom', $data['nom'], PDO::PARAM_STR);
+        $stmt->bindValue(':mot_de_passe', $data['mot_de_passe'], PDO::PARAM_STR);
+        $stmt->execute();
+        return $this->db->lastInsertId();
+    }
 }
 ?>
