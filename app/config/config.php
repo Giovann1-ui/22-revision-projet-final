@@ -44,7 +44,7 @@ if (empty($app) === true) {
 
 // This autoloads your code in the app directory so you don't have to require_once everything
 // You'll need to namespace your classes with "app\folder\" to include them properly
-//$app->path(__DIR__ . $ds . '..' . $ds . '..');
+$app->path(__DIR__ . $ds . '..' . $ds . '..');
 
 // Core config variables
 $app->set('flight.base_url', '/',);           // Base URL for your app. Change if app is in a subdirectory (e.g., '/myapp/')
