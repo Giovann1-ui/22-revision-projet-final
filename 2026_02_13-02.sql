@@ -9,6 +9,15 @@ CREATE TABLE categories (
     nom VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE membres (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(255) NOT NULL,
+    carac VARCHAR(255) NOT NULL,
+    mot_de_passe VARCHAR(255) NOT NULL
+);
+
+
+
 -- Insertion de données d'exemple pour la table admin
 INSERT INTO admin (nom, mot_de_passe) VALUES
 ('admin1', 'password1'),
