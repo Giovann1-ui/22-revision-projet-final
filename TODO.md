@@ -15,9 +15,9 @@
 ##### Andriantsoa
 - [ ] page de connexion et d'inscription (admin)
     - [ ] login (identique à celui de l'utilisateur)
-    - [ ] gestion des categories d'objets (je suis pas sur de comprendre le but ici)
-        - [ ] ajouter une catégorie
-        - [ ] supprimer une catégorie
+- [ ] gestion des categories d'objets (je suis pas sur de comprendre le but ici)
+    - [ ] ajouter une catégorie
+    - [ ] supprimer une catégorie
 - [ ] page de connexion et d'inscription (utilisateur)
     - [ ] login
     - [ ] inscription

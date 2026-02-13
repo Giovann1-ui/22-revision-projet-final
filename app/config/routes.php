@@ -1,30 +1,46 @@
 <?php
 
-use app\controllers\ApiExampleController;
-use app\middlewares\SecurityHeadersMiddleware;
-use flight\Engine;
-use flight\net\Router;
+use app\controllers\AdminController;
+use app\controllers\UserController;
+use app\controllers\CategoryController;
 
-/** 
- * @var Router $router 
- * @var Engine $app
- */
+Flight::route('GET /', [UserController::class, 'showLogin']);
 
-// This wraps all routes in the group with the SecurityHeadersMiddleware
-$router->group('', function(Router $router) use ($app) {
+Flight::route('POST /', [UserController::class, 'processLogin']);
 
-	$router->get('/', function() use ($app) {
-		$app->render('welcome', [ 'message' => 'You are gonna do great things!' ]);
-	});
+Flight::route('POST /login', [UserController::class, 'processLogin']);
 
-	$router->get('/hello-world/@name', function($name) {
-		echo '<h1>Hello world! Oh hey '.$name.'!</h1>';
-	});
+Flight::route('GET /register', [UserController::class, 'showRegister']);
 
-	$router->group('/api', function() use ($router) {
-		$router->get('/users', [ ApiExampleController::class, 'getUsers' ]);
-		$router->get('/users/@id:[0-9]', [ ApiExampleController::class, 'getUser' ]);
-		$router->post('/users/@id:[0-9]', [ ApiExampleController::class, 'updateUser' ]);
-	});
-	
-}, [ SecurityHeadersMiddleware::class ]);
+Flight::route('POST /register', [UserController::class, 'processRegister']);
+
+Flight::route('POST /logout', function() {
+    session_start();
+    unset($_SESSION['user']);
+    unset($_SESSION['admin']);
+    session_regenerate_id(true);
+    Flight::redirect('/');
+});
+
+Flight::route('GET /client', function() {
+    echo "client a ajouter";
+});
+
+Flight::group('/admin', function(flight\net\Router $router) {
+    $router->post('/login', [AdminController::class, 'processLogin']);
+    $router->get('/register', [AdminController::class, 'showRegister']);
+    $router->post('/register', [AdminController::class, 'processRegister']);
+    $router->post('/logout', function() {
+        session_start();
+        unset($_SESSION['admin']);
+        session_regenerate_id(true);
+        Flight::redirect('/admin/login');
+    });
+});
+
+Flight::group('/categories', function(flight\net\Router $router) {
+    $router->get('', [CategoryController::class, 'index']);
+    $router->get('/create', [CategoryController::class, 'create']);
+    $router->post('/store', [CategoryController::class, 'store']);
+    $router->post('/delete', [CategoryController::class, 'delete']);
+});
