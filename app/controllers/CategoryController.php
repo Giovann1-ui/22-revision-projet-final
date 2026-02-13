@@ -76,18 +76,18 @@ class CategoryController
 
     private function getUserCount()
     {
-        $stmt = Flight::db()->prepare("SELECT COUNT(*) as count FROM membres WHERE carac = 'user'");
+        $stmt = Flight::db()->prepare("SELECT COUNT(*) as count FROM Membres");
         $stmt->execute();
         $result = $stmt->fetch();
-        return $result['count'] ?? 0;
+        return isset($result['count']) ? $result['count'] : 0;
     }
 
     private function getExchangeCount()
     {
-        $stmt = Flight::db()->prepare("SELECT COUNT(*) as count FROM propositions WHERE id_statut_proposition = (SELECT id FROM statut_proposition WHERE nom = 'accepté')");
+        $stmt = Flight::db()->prepare("SELECT COUNT(*) as count FROM Propositions WHERE id_statut_proposition = (SELECT id FROM Statut_Proposition WHERE nom = 'accepté')");
         $stmt->execute();
         $result = $stmt->fetch();
-        return $result['count'] ?? 0;
+        return isset($result['count']) ? $result['count'] : 0;
     }
 }
 ?>
