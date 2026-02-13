@@ -13,14 +13,18 @@
     - [ ] insérer des données de test
   
 ##### Andriantsoa
-- [ ] page de connexion et d'inscription (admin)
-    - [ ] login (identique à celui de l'utilisateur)
-- [ ] gestion des categories d'objets (je suis pas sur de comprendre le but ici)
-    - [ ] ajouter une catégorie
-    - [ ] supprimer une catégorie
-- [ ] page de connexion et d'inscription (utilisateur)
-    - [ ] login
-    - [ ] inscription
+- [x] page de connexion et d'inscription (admin)
+    - [x] login (identique à celui de l'utilisateur)
+- [x] gestion des categories d'objets (je suis pas sur de comprendre le but ici)
+    - [x] ajouter une catégorie
+    - [x] supprimer une catégorie
+- [x] page de connexion et d'inscription (utilisateur)
+    - [x] login
+    - [x] inscription
+- [ ] backoffice (page admin)
+    - [ ] statistiques
+        - [ ] nombre d'utilisateurs inscrits (compter les lignes dans membres où carac='user')
+        - [ ] nombre d'échanges effectués (compter les propositions avec statut 'accepté')
 #
 - [ ] page d'accueil
     - [ ] afficher les objets avec son propriétaire

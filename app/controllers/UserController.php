@@ -33,8 +33,7 @@ class UserController
                 session_start();
                 $_SESSION['user'] = [
                     'id' => $user['id'],
-                    'nom' => $user['nom'],
-                    'carac' => $user['carac']
+                    'nom' => $user['nom']
                 ];
                 session_regenerate_id(true);
                 Flight::redirect('/client');
@@ -55,8 +54,7 @@ class UserController
         session_start();
         $_SESSION['user'] = [
             'id' => $newId,
-            'nom' => $nom,
-            'carac' => 'user'
+            'nom' => $nom
         ];
         session_regenerate_id(true);
 
