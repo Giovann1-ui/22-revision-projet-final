@@ -216,4 +216,19 @@ class ObjetController
         ]);
         Flight::redirect('/mes-objets/edit?idObjet=' . $idObjet);
     }
+
+    /**
+     * Affiche l'historique d'appartenance d'un objet
+     */
+    public function historiqueObjet($id)
+    {
+        $objetModel = new ObjetModel(Flight::db());
+        $objet = $objetModel->get_Object_by_id($id);
+        $historique = $objetModel->getHistoriqueAppartenance($id);
+        
+        Flight::render('historique-objet', [
+            'objet' => $objet,
+            'historique' => $historique
+        ]);
+    }
 }

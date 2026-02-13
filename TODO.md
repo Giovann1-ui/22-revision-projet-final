@@ -56,3 +56,6 @@
         - [x] annuler une proposition d'échange
         - [x] refuser une proposition d'échange
         - [x] accepter une proposition d'échange
+- [x] Page pour voir l'historique d'appartenance d'un objet(publique)
+    - [x] creer vue pour ca
+    - [x] afficher l'historique d'appartenance d'un objet

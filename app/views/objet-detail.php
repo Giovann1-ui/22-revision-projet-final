@@ -124,6 +124,10 @@ $proprietaire = $proprietaire ?? null;
                                         <i class="bi bi-calendar3 me-1"></i>
                                         Publié le <?= date('d/m/Y', strtotime($objet['date_creation'])) ?>
                                     </span>
+                                    <a href="/objets/<?= $objet['id'] ?>/historique" class="text-decoration-none">
+                                        <i class="bi bi-clock-history me-1"></i>
+                                        Voir l'historique
+                                    </a>
                                 </div>
                                 
                                 <?php if (isset($_SESSION['user']) && $_SESSION['user_id'] != $objet['id_membre']): ?>

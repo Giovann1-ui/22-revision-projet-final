@@ -203,5 +203,20 @@ class ObjetModel
             return NULL;
         }
     }
+
+    /**
+     * Récupère l'historique d'appartenance d'un objet via les échanges acceptés
+     */
+    public function getHistoriqueAppartenance($id_objet)
+    {
+        $stmt = $this->db->prepare("
+            SELECT * FROM v_historique_appartenance_objet
+            WHERE id_objet_membre1 = :id_objet OR id_objet_membre2 = :id_objet
+            ORDER BY date_proposition DESC
+        ");
+        $stmt->bindValue(':id_objet', (int) $id_objet, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 ?>

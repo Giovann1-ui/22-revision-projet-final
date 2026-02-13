@@ -44,6 +44,7 @@ $router->group('', function (Router $router) use ($app) {
 	$router->group('/objets', function (Router $router) {
 		// $router->get('', [ObjetController::class, 'allObjets']);
 		$router->get('/@id:[0-9]+', [ObjetController::class, 'objet']);
+		$router->get('/@id:[0-9]+/historique', [ObjetController::class, 'historiqueObjet']);
 		$router->get('/membre/@id_membre:[0-9]+', [ObjetController::class, 'objetsByMembre']);
 	});
 
