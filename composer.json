@@ -43,5 +43,10 @@
     },
     "require-dev": {
         "flightphp/tracy-extensions": "^0.1 || ^0.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "app/"
+        }
     }
 }
