@@ -8,6 +8,27 @@
 <body>
     <div class="container mt-5">
         <h1>Gestion des Catégories</h1>
+
+        <!-- Statistiques -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Utilisateurs Inscrits</h5>
+                        <p class="card-text display-4"><?php echo $userCount; ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title">Échanges Effectués</h5>
+                        <p class="card-text display-4"><?php echo $exchangeCount; ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <a href="/categories/create" class="btn btn-primary mb-3">Add Categories</a>
         <table class="table table-striped">
             <thead>

@@ -40,5 +40,21 @@ class CategoryModel
         $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     }
+
+    public function getUserCount()
+    {
+        $stmt = $this->db->prepare("SELECT COUNT(id) as count FROM membres");
+        $stmt->execute();
+        $result = $stmt->fetch();
+        return $result['count'] ?? 0;
+    }
+
+    public function getExchangeCount()
+    {
+        $stmt = $this->db->prepare("SELECT COUNT(*) as count FROM propositions WHERE id_statut_proposition = (SELECT id FROM statut_proposition WHERE id = 2)");
+        $stmt->execute();
+        $result = $stmt->fetch();
+        return $result['count'] ?? 0;
+    }
 }
 ?>

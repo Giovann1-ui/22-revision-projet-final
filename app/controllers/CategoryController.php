@@ -8,14 +8,23 @@ class CategoryController
 {
     public function index()
     {
+        session_start();
+        if (empty($_SESSION['admin'])) {
+            Flight::redirect('/admin/login');
+            return;
+        }
+
         $model = new CategoryModel(Flight::db());
         $categories = $model->getAll();
-        Flight::render('categories/index', ['categories' => $categories]);
+
+        $userCount = $this->getUserCount();
+        $exchangeCount = $this->getExchangeCount();
+
+        Flight::render('categories/index', ['categories' => $categories, 'userCount' => $userCount, 'exchangeCount' => $exchangeCount]);
     }
 
     public function create()
     {
-        // Only admin can access - simple check
         session_start();
         if (empty($_SESSION['admin'])) {
             Flight::redirect('/admin/login');
@@ -35,7 +44,7 @@ class CategoryController
 
         $name = trim(Flight::request()->data->nom ?? '');
         if ($name === '') {
-            Flight::render('categories/create', ['error' => 'Le nom de la catégorie est requis']);
+            Flight::redirect('/categories');
             return;
         }
 
@@ -63,6 +72,22 @@ class CategoryController
         $model->delete($id);
 
         Flight::redirect('/categories');
+    }
+
+    private function getUserCount()
+    {
+        $stmt = Flight::db()->prepare("SELECT COUNT(*) as count FROM membres WHERE carac = 'user'");
+        $stmt->execute();
+        $result = $stmt->fetch();
+        return $result['count'] ?? 0;
+    }
+
+    private function getExchangeCount()
+    {
+        $stmt = Flight::db()->prepare("SELECT COUNT(*) as count FROM propositions WHERE id_statut_proposition = (SELECT id FROM statut_proposition WHERE nom = 'accepté')");
+        $stmt->execute();
+        $result = $stmt->fetch();
+        return $result['count'] ?? 0;
     }
 }
 ?>
