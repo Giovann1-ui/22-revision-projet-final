@@ -55,7 +55,7 @@ $base_url = Flight::get('base_url');
                         <h4><i class="bi bi-person-plus"></i> Inscription</h4>
                     </div>
                     <div class="card-body p-4">
-                        <form method="post" action="/register" class="needs-validation" novalidate>
+                        <form method="post" action="<?= $base_url ?>register" class="needs-validation" novalidate>
                             <div class="mb-3">
                                 <label class="form-label">Nom</label>
                                 <div class="input-group">

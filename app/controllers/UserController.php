@@ -43,8 +43,7 @@ class UserController
         Flight::render('login', ['error' => 'Nom ou mot de passe incorrect']);
     }
 
-    public function processRegister()
-    {
+    public static function processRegister() {
         $usermodel = new UserModel(Flight::db());
         $nom = trim(Flight::request()->data->nom ?? '');
         $motDePasse = Flight::request()->data->motDePasse ?? '';
@@ -58,7 +57,7 @@ class UserController
         ];
         session_regenerate_id(true);
 
-        Flight::redirect('/login');
+        Flight::redirect('/'); 
     }
 
     public function logout()
@@ -79,4 +78,3 @@ class UserController
         Flight::render('register');
     }
 }
-?>
