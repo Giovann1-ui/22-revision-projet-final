@@ -43,5 +43,21 @@ class UserModel
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function findByUsername($nom)
+    {
+        $stmt = $this->db->prepare("SELECT id, nom FROM Membres WHERE nom = :nom");
+        $stmt->bindValue(':nom', $nom, PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function updateUser($id, array $data)
+    {
+        $stmt = $this->db->prepare("UPDATE Membres SET nom = :nom WHERE id = :id");
+        $stmt->bindValue(':nom', $data['nom'], PDO::PARAM_STR);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
 }
 ?>
