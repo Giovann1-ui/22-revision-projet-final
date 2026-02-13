@@ -49,7 +49,7 @@ if (session_status() === PHP_SESSION_NONE) {
 if (!isset($_SESSION['user'])) {
     try {
         $userModel = new \app\models\UserModel(Flight::db());
-        $user = $userModel->get_User_by_id(3);
+        $user = $userModel->get_User_by_id(1);
         
         if ($user) {
             $_SESSION['user'] = $user;
