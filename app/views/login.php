@@ -64,7 +64,7 @@ $base_url = Flight::get('base_url');
                                         <i class="bi bi-person"></i>
                                     </span>
                                     <input type="text" name="nom" class="form-control" placeholder="Entrez votre nom"
-                                        required value="pierre_durant">
+                                        required value="pierre_durand">
                                 </div>
                             </div>
 
