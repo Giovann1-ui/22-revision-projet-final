@@ -15,7 +15,7 @@ class UserModel
 
     public function authenticate($nom, $motDePasse)
     {
-        $stmt = $this->db->prepare("SELECT id, nom, mot_de_passe, carac FROM membres WHERE nom = :username");
+        $stmt = $this->db->prepare("SELECT id, nom, mot_de_passe FROM Membres WHERE nom = :username");
         $stmt->bindValue(':username', $nom, PDO::PARAM_STR);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -27,22 +27,9 @@ class UserModel
         return false;
     }
 
-    public function getType($nom) {
-        $stmt = $this->db->prepare("SELECT carac FROM membres WHERE nom = :username");
-        $stmt->bindValue(':username', $nom, PDO::PARAM_STR);
-        $stmt->execute();
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($user) {
-            return $user['carac'];
-        }
-        
-        return null;
-    }
-
     public function createUser(array $data)
     {
-        $stmt = $this->db->prepare("INSERT INTO membres (nom, mot_de_passe, carac) VALUES (:nom, :mot_de_passe, 'user')");
+        $stmt = $this->db->prepare("INSERT INTO Membres (nom, mot_de_passe) VALUES (:nom, :mot_de_passe)");
         $stmt->bindValue(':nom', $data['nom'], PDO::PARAM_STR);
         $stmt->bindValue(':mot_de_passe', $data['mot_de_passe'], PDO::PARAM_STR);
         $stmt->execute();

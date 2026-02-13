@@ -15,7 +15,6 @@ class CategoryController
 
     public function create()
     {
-        // Only admin can access - simple check
         session_start();
         if (empty($_SESSION['admin'])) {
             Flight::redirect('/admin/login');
