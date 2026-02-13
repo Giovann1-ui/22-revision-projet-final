@@ -16,29 +16,31 @@ class UserController
         $motDePasse = Flight::request()->data->motDePasse ?? '';
 
         $admin = $adminModel->findByUsername($nom);
-        if ($admin && $admin['mot_de_passe'] === $motDePasse) {
-            session_start();
-            $_SESSION['admin'] = [
-                'id' => $admin['id'],
-                'nom' => $admin['nom']
-            ];
-            session_regenerate_id(true);
-            Flight::redirect('/categories');
-            return;
+        if ($admin) {
+            if ($admin && $admin['mot_de_passe'] === $motDePasse) {
+                session_start();
+                $_SESSION['admin'] = [
+                    'id' => $admin['id'],
+                    'nom' => $admin['nom']
+                ];
+                session_regenerate_id(true);
+                Flight::redirect('/categories');
+                return;
+            }
+        } else {
+            $user = $userModel->authenticate($nom, $motDePasse);
+            if ($user) {
+                session_start();
+                $_SESSION['user'] = [
+                    'id' => $user['id'],
+                    'nom' => $user['nom'],
+                    'carac' => $user['carac']
+                ];
+                session_regenerate_id(true);
+                Flight::redirect('/client');
+                return;
+            }
         }
-        $user = $userModel->authenticate($nom, $motDePasse);
-        if ($user) {
-            session_start();
-            $_SESSION['user'] = [
-                'id' => $user['id'],
-                'nom' => $user['nom'],
-                'carac' => $user['carac']
-            ];
-            session_regenerate_id(true);
-            Flight::redirect('/client');
-            return;
-        }
-
         Flight::render('login', ['error' => 'Nom ou mot de passe incorrect']);
     }
 
@@ -58,7 +60,7 @@ class UserController
         ];
         session_regenerate_id(true);
 
-        Flight::redirect('/client');
+        Flight::redirect('/login');
     }
 
     public function logout()

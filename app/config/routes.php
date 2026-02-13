@@ -23,7 +23,7 @@ Flight::route('POST /logout', function() {
 });
 
 Flight::route('GET /client', function() {
-    //client
+    echo "client a ajouter";
 });
 
 Flight::group('/admin', function(flight\net\Router $router) {
