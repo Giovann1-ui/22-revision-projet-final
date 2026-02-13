@@ -35,6 +35,8 @@ use Tracy\Debugger;
  *
  * For advanced options, see the plugin documentation above.
  **********************************************/
+// On utilise les sessions PHP natives - pas besoin de bibliothèque externe
+// Les sessions sont déjà démarrées dans bootstrap.php
 
 /*********************************************
  *           Tracy Debugger Setup            *

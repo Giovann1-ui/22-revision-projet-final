@@ -3,6 +3,13 @@
 use app\controllers\AdminController;
 use app\controllers\UserController;
 use app\controllers\CategoryController;
+use app\controllers\ApiExampleController;
+use app\controllers\HomeController;
+use app\controllers\ProfilController;
+use app\controllers\ObjetController;
+use app\middlewares\SecurityHeadersMiddleware;
+use flight\Engine;
+use flight\net\Router;
 
 Flight::route('GET /', [UserController::class, 'showLogin']);
 
@@ -11,6 +18,20 @@ Flight::route('POST /', [UserController::class, 'processLogin']);
 Flight::route('POST /login', [UserController::class, 'processLogin']);
 
 Flight::route('GET /register', [UserController::class, 'showRegister']);
+
+// Page d'accueil
+	$router->get('/accueil', [ HomeController::class, 'index' ]);
+
+	// Profil
+	$router->get('/profile', [ ProfilController::class, 'monProfil' ]);
+	$router->post('/profile/update', [ ProfilController::class, 'updateProfil' ]);
+
+	// Gestion des objets
+	$router->get('/mes-objets/ajouter', [ ObjetController::class, 'showAddObjetForm' ]);
+	$router->post('/mes-objets/ajouter', [ ObjetController::class, 'createObjet' ]);
+	$router->delete('/mes-objets/supprimer/@id', [ ObjetController::class, 'deleteObjet' ]);
+	// Route POST alternative pour la suppression (fallback si DELETE ne marche pas)
+	$router->post('/mes-objets/supprimer/@id', [ ObjetController::class, 'deleteObjet' ]);
 
 Flight::route('POST /register', [UserController::class, 'processRegister']);
 

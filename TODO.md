@@ -35,6 +35,29 @@
     - [ ] afficher les objets du membre
     - [ ] ajouter un objet
     - [ ] supprimer un objet
+- [ ] page de connexion et d'inscription (admin)
+    - [ ] login (identique à celui de l'utilisateur)
+    - [ ] gestion des categories d'objets (je suis pas sur de comprendre le but ici)
+        - [ ] ajouter une catégorie
+        - [ ] supprimer une catégorie
+- [ ] page de connexion et d'inscription (utilisateur)
+    - [ ] login
+    - [ ] inscription
+## Manantsoa 
+- [x] page d'accueil
+    - [x] afficher les objets avec son propriétaire
+    - [x] afficher les membres
+- [x] page de profil
+    - [x] afficher les informations du membre
+        - [x] nom
+    - [x] afficher les objets du membre
+    - [x] ajouter un objet
+    - [x] supprimer un objet
+- [x] Recherche
+    - [x] par catégories
+    - [x] mot clés
+##
+
 - [ ] page pour gerer les objets du membre
     - [ ] mofifier titre
     - [ ] modifier description
