@@ -1,38 +1,46 @@
 <?php
 
+use app\controllers\AdminController;
 use app\controllers\UserController;
-use flight\Engine;
-use flight\net\Router;
+use app\controllers\CategoryController;
 
-/** 
- * @var Router $router 
- * @var Engine $app
- */
+Flight::route('GET /', [UserController::class, 'showLogin']);
 
-$router->get('/', function() {
-    Flight::redirect('/login');
-});
-$router->group('', function(Router $router) {
-    $router->get('/login', [UserController::class, 'showLogin']);
-    $router->post('/login', [UserController::class, 'processLogin']);
-    $router->get('/register', [UserController::class, 'showRegister']);
-    $router->post('/register', [UserController::class, 'processRegister']);
-    $router->get('/logout', [UserController::class, 'logout']);
-});
+Flight::route('POST /', [UserController::class, 'processLogin']);
 
-// Admin routes
-$router->group('/admin', function(Router $router) {
-    $router->get('/login', ['app\controllers\AdminController', 'showLogin']);
-    $router->post('/login', ['app\controllers\AdminController', 'processLogin']);
-    $router->get('/register', ['app\controllers\AdminController', 'showRegister']);
-    $router->post('/register', ['app\controllers\AdminController', 'processRegister']);
-    $router->get('/logout', ['app\controllers\AdminController', 'logout']);
+Flight::route('POST /login', [UserController::class, 'processLogin']);
+
+Flight::route('GET /register', [UserController::class, 'showRegister']);
+
+Flight::route('POST /register', [UserController::class, 'processRegister']);
+
+Flight::route('POST /logout', function() {
+    session_start();
+    unset($_SESSION['user']);
+    unset($_SESSION['admin']);
+    session_regenerate_id(true);
+    Flight::redirect('/');
 });
 
-// Category management (admin)
-$router->group('', function(Router $router) {
-    $router->get('/categories', ['app\controllers\CategoryController', 'index']);
-    $router->get('/categories/create', ['app\controllers\CategoryController', 'create']);
-    $router->post('/categories', ['app\controllers\CategoryController', 'store']);
-    $router->post('/categories/delete', ['app\controllers\CategoryController', 'delete']);
+Flight::route('GET /client', function() {
+    //client
+});
+
+Flight::group('/admin', function(flight\net\Router $router) {
+    $router->post('/login', [AdminController::class, 'processLogin']);
+    $router->get('/register', [AdminController::class, 'showRegister']);
+    $router->post('/register', [AdminController::class, 'processRegister']);
+    $router->post('/logout', function() {
+        session_start();
+        unset($_SESSION['admin']);
+        session_regenerate_id(true);
+        Flight::redirect('/admin/login');
+    });
+});
+
+Flight::group('/categories', function(flight\net\Router $router) {
+    $router->get('', [CategoryController::class, 'index']);
+    $router->get('/create', [CategoryController::class, 'create']);
+    $router->post('/store', [CategoryController::class, 'store']);
+    $router->post('/delete', [CategoryController::class, 'delete']);
 });

@@ -21,6 +21,7 @@ date_default_timezone_set('UTC');
 
 // Error reporting level (E_ALL recommended for development)
 error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // Character encoding
 if (function_exists('mb_internal_encoding') === true) {
@@ -43,7 +44,7 @@ if (empty($app) === true) {
 
 // This autoloads your code in the app directory so you don't have to require_once everything
 // You'll need to namespace your classes with "app\folder\" to include them properly
-$app->path(__DIR__ . $ds . '..' . $ds . '..');
+//$app->path(__DIR__ . $ds . '..' . $ds . '..');
 
 // Core config variables
 $app->set('flight.base_url', '/',);           // Base URL for your app. Change if app is in a subdirectory (e.g., '/myapp/')
@@ -67,10 +68,10 @@ return [
 	 **************************************/
 	'database' => [
 		// MySQL Example:
-		// 'host'     => 'localhost',      // Database host (e.g., 'localhost', 'db.example.com')
-		// 'dbname'   => 'your_db_name',   // Database name (e.g., 'flightphp')
-		// 'user'     => 'your_username',  // Database user (e.g., 'root')
-		// 'password' => 'your_password',  // Database password (never commit real passwords)
+		'host'     => '127.0.0.1',      // Database host (e.g., 'localhost', 'db.example.com')
+		'dbname'   => 'takalo',   // Database name (e.g., 'flightphp')
+		'user'     => 'root',  // Database user (e.g., 'root')
+		'password' => '',  // Database password (never commit real passwords)
 
 		// SQLite Example:
 		// 'file_path' => __DIR__ . $ds . '..' . $ds . 'database.sqlite', // Path to SQLite file

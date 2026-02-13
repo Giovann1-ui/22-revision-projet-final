@@ -1,5 +1,4 @@
 <?php
-
 use app\models\UserModel;
 use Flight;
 
@@ -12,7 +11,7 @@ $base_url = Flight::get('base_url');
 
 <head>
     <meta charset="UTF-8">
-    <title>Connexion - Metis</title>
+    <title>Inscription - Metis</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -53,10 +52,10 @@ $base_url = Flight::get('base_url');
             <div class="col-lg-6 col-md-8">
                 <div class="card shadow-lg border-0 rounded-4">
                     <div class="card-header bg-primary">
-                        <h4><i class="bi bi-box-arrow-in-right"></i> Connexion</h4>
+                        <h4><i class="bi bi-person-plus"></i> Inscription</h4>
                     </div>
                     <div class="card-body p-4">
-                        <form method="post" action="/login" class="needs-validation" novalidate>
+                        <form method="post" action="/register" class="needs-validation" novalidate>
                             <div class="mb-3">
                                 <label class="form-label">Nom</label>
                                 <div class="input-group">
@@ -86,12 +85,12 @@ $base_url = Flight::get('base_url');
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-primary btn-lg">
                                     <i class="bi bi-check-circle me-2"></i>
-                                    Se connecter
+                                    S'inscrire
                                 </button>
                             </div>
                         </form>
                         <div class="text-center mt-3">
-                            <a href="/register">Pas de compte ? S'inscrire</a>
+                            <a href="/">Déjà un compte ? Se connecter</a>
                         </div>
                     </div>
                 </div>
