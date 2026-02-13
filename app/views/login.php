@@ -64,7 +64,7 @@ $base_url = Flight::get('base_url');
                                         <i class="bi bi-person"></i>
                                     </span>
                                     <input type="text" name="nom" class="form-control" placeholder="Entrez votre nom"
-                                        required>
+                                        required value="pierre_durant">
                                 </div>
                             </div>
 
@@ -75,7 +75,7 @@ $base_url = Flight::get('base_url');
                                         <i class="bi bi-lock"></i>
                                     </span>
                                     <input type="password" name="motDePasse" class="form-control"
-                                        placeholder="Entrez votre mot de passe" required>
+                                        placeholder="Entrez votre mot de passe" required value="password123">
                                 </div>
                             </div>
 

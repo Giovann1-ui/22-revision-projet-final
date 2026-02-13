@@ -8,7 +8,6 @@ class CategoryController
 {
     public function index()
     {
-        session_start();
         if (empty($_SESSION['admin'])) {
             Flight::redirect('/admin/login');
             return;
@@ -25,7 +24,6 @@ class CategoryController
 
     public function create()
     {
-        session_start();
         if (empty($_SESSION['admin'])) {
             Flight::redirect('/admin/login');
             return;
@@ -36,7 +34,6 @@ class CategoryController
 
     public function store()
     {
-        session_start();
         if (empty($_SESSION['admin'])) {
             Flight::redirect('/admin/login');
             return;
@@ -56,7 +53,6 @@ class CategoryController
 
     public function delete()
     {
-        session_start();
         if (empty($_SESSION['admin'])) {
             Flight::redirect('/admin/login');
             return;

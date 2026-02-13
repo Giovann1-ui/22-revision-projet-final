@@ -13,11 +13,19 @@ use flight\net\Router;
 
 Flight::route('GET /', [UserController::class, 'showLogin']);
 
+Flight::route('GET /login', [UserController::class, 'showLogin']);
+
 Flight::route('POST /', [UserController::class, 'processLogin']);
 
 Flight::route('POST /login', [UserController::class, 'processLogin']);
 
 Flight::route('GET /register', [UserController::class, 'showRegister']);
+
+Flight::route('POST /register', [UserController::class, 'processRegister']);
+
+// Logout en GET et POST pour éviter "Method Not Allowed"
+Flight::route('GET /logout', [UserController::class, 'logout']);
+Flight::route('POST /logout', [UserController::class, 'logout']);
 
 // Page d'accueil
 	$router->get('/accueil', [ HomeController::class, 'index' ]);
@@ -33,21 +41,12 @@ Flight::route('GET /register', [UserController::class, 'showRegister']);
 	// Route POST alternative pour la suppression (fallback si DELETE ne marche pas)
 	$router->post('/mes-objets/supprimer/@id', [ ObjetController::class, 'deleteObjet' ]);
 
-Flight::route('POST /register', [UserController::class, 'processRegister']);
-
-Flight::route('POST /logout', function() {
-    session_start();
-    unset($_SESSION['user']);
-    unset($_SESSION['admin']);
-    session_regenerate_id(true);
-    Flight::redirect('/');
-});
-
 Flight::route('GET /client', function() {
     echo "client a ajouter";
 });
 
 Flight::group('/admin', function(flight\net\Router $router) {
+    $router->get('/login', [AdminController::class, 'showLogin']);
     $router->post('/login', [AdminController::class, 'processLogin']);
     $router->get('/register', [AdminController::class, 'showRegister']);
     $router->post('/register', [AdminController::class, 'processRegister']);

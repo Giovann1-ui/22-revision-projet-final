@@ -44,7 +44,7 @@ $selected_categorie = $selected_categorie ?? '';
     <header class="admin-header">
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">
             <div class="container-fluid">
-                <a class="navbar-brand d-flex align-items-center" href="/">
+                <a class="navbar-brand d-flex align-items-center" href="/accueil">
                     <img src="data:image/svg+xml,%3csvg%20width='32'%20height='32'%20viewBox='0%200%2032%2032'%20fill='none'%20xmlns='http://www.w3.org/2000/svg'%3e%3ccircle%20cx='16'%20cy='16'%20r='16'%20fill='url(%23logoGradient)'/%3e%3cpath%20d='M10%2024V8h2.5l2.5%206.5L17.5%208H20v16h-2V12.5L16.5%2020h-1L14%2012.5V24H10z'%20fill='white'%20font-weight='700'/%3e%3cdefs%3e%3clinearGradient%20id='logoGradient'%20x1='0'%20y1='0'%20x2='32'%20y2='32'%3e%3cstop%20offset='0%25'%20stop-color='%236366f1'/%3e%3cstop%20offset='100%25'%20stop-color='%238b5cf6'/%3e%3c/linearGradient%3e%3c/defs%3e%3c/svg%3e"
                         alt="Logo" height="32" class="d-inline-block align-text-top me-2">
                     <h1 class="h4 mb-0 fw-bold text-primary">Takalo</h1>
@@ -55,7 +55,7 @@ $selected_categorie = $selected_categorie ?? '';
                         <div class="d-flex align-items-center gap-3">
                             <a href="/profile"><span class="text-muted">
                                 <i class="bi bi-person-circle me-1"></i>
-                                <?= htmlspecialchars($_SESSION['user_nom']) ?>
+                                <?= htmlspecialchars($_SESSION['user']['nom']) ?>
                             </span></a>
                             <a href="/logout" class="btn btn-sm btn-outline-danger">
                                 <i class="bi bi-box-arrow-right me-1"></i>Déconnexion
@@ -83,7 +83,7 @@ $selected_categorie = $selected_categorie ?? '';
         <!-- Barre de recherche -->
         <div class="row mb-4">
             <div class="col-12">
-                <form method="GET" action="/" class="card shadow-sm">
+                <form method="GET" action="/accueil" class="card shadow-sm">
                     <div class="card-body">
                         <div class="row g-3 align-items-end">
                             <!-- Mot-clé -->
@@ -115,7 +115,7 @@ $selected_categorie = $selected_categorie ?? '';
                                     <i class="bi bi-search me-1"></i>Rechercher
                                 </button>
                                 <?php if (!empty($keyword) || !empty($selected_categorie)): ?>
-                                    <a href="/" class="btn btn-outline-secondary" title="Réinitialiser">
+                                    <a href="/accueil" class="btn btn-outline-secondary" title="Réinitialiser">
                                         <i class="bi bi-x-lg"></i>
                                     </a>
                                 <?php endif; ?>
@@ -165,7 +165,7 @@ $selected_categorie = $selected_categorie ?? '';
                                 <p class="text-muted">
                                     Essayez avec d'autres mots-clés ou une autre catégorie
                                 </p>
-                                <a href="/" class="btn btn-outline-primary mt-2">
+                                <a href="/accueil" class="btn btn-outline-primary mt-2">
                                     <i class="bi bi-arrow-counterclockwise me-1"></i>Réinitialiser la recherche
                                 </a>
                             <?php else: ?>
